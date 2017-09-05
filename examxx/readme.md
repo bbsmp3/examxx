@@ -7,11 +7,11 @@
 
 - 软件采用`GPL`协议，完全开放且免费，并且有固定的开发团队提供技术支持
 [官方网站](http://www.examxx.net)
-![](http://static.oschina.net/uploads/space/2015/0129/193211_RwoW_135389.png)
 
-![](http://static.oschina.net/uploads/space/2015/0112/104147_knZd_135389.jpg)
+## bbsmp3修改声明
+- 本项目是在原有项目上增加移动页面访问的相关功能，仅供个人学习及内部使用
 
-##[Exam++](http://www.examxx.net) 有什么功能
+## [Exam++](http://www.examxx.net) 有什么功能
 | 功能模块      |    子功能 | 详细介绍  |
 | :-------- | :--------| :-- |
 |用户功能模块|用户注册登陆|用户可以通过用户名邮箱注册网站，并且通过注册的用户登陆网站。|
@@ -27,7 +27,7 @@
 ||试卷管理|教师可以从题库中选择试题组成试卷供学员考试之用，组卷分为手动和自动两种。组卷完毕后还可以进一步调整试卷的分值，移除或添加试题。|
 ||用户管理|教师或管理员可以管理目前网站的注册用户。|
 
-##使用
+## 使用
 - [Exam++](http://www.examxx.net)采用了mysql数据库，因此，请安装mysql（5.0以上版本），安装完毕后，请创建一个名为examxx的数据库，并将doc目录下的数据库文件`examxx.sql`导入到数据库。
 - 请将examxx.war拷贝到tomcat目录下的webapps目录中。
 - tomcat启动后，war包自动部署到tomcat，打开webapps\examxx\WEB-INF\spring\root-context.xml修改数据库配置，填写你自己的数据库信息，如下：
@@ -38,12 +38,12 @@
 ![](http://git.oschina.net/ocelot/examxx/raw/master/doc/222.jpg)
 - 点击右上角登录按钮，输入用户名admin和密码123456即可登录系统。
 
-##问题
+## 问题
 - 如果有任何问题或者建议请发email：<link4hy@126.com>,<mars-fox@163.com>。 建议与问题一经采纳即会将您的贡献大名列入[Exam++](http://www.examxx.net)的感谢名单中。
 - 或加入QQ群和我们一起讨论吧！
 [![](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=b365bd36df1bd42ffcf8ab7b91fb93f21841548bcda6ec721de276bae9f72e35)
 
-##修改记录
+## 修改记录
 - 2015-03-07 试题增加标签功能
 - 2015-02-03 修改题库分页按钮无效的bug
 - 2015-01-24 完善题库导入功能
