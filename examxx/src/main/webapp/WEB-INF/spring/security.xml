@@ -21,6 +21,8 @@
 			access="hasRole('ROLE_STUDENT')" />
 		<security:intercept-url pattern="/api2/**"
 			access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_STUDENT')" />
+		<security:intercept-url pattern="/mobile/**"
+			access="hasAnyRole('ROLE_ADMIN', 'ROLE_MOBILE')" />
 		<security:custom-filter position="FORM_LOGIN_FILTER"
 			ref="securityFilter" />
 		<security:logout logout-url="/j_spring_security_logout"
