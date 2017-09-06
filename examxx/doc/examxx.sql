@@ -714,3 +714,16 @@ CREATE TABLE `t_c3p0` (
 -- ----------------------------
 -- Records of t_c3p0
 -- ----------------------------
+
+-- ----------------------------
+-- 开发添加
+-- ----------------------------
+INSERT INTO `et_role` VALUES ('4', 'ROLE_MOBILE', '移动', 'mobile');
+INSERT INTO `et_user` VALUES ('6', 'mobile1', null, '260acbffd3c30786febc29d7dd71a9880a811e77', '1@1.1', null, '2015-02-15 21:24:53', null, null, '1', '1', '2015-02-13 14:52:05', '2015-02-15 21:24:53', null, '2', '3');
+INSERT INTO `et_r_user_role` VALUES ('6', '4');
+
+
+
+
+
+

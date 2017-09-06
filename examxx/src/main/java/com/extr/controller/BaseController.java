@@ -68,6 +68,19 @@ public class BaseController {
 
 		return "redirect:/admin/question-list";
 	}
+	
+	/**
+	 * 移动登陆
+	 * 
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = { "/mobile/home" }, method = RequestMethod.GET)
+	public String mobileHomePage(Model model, HttpServletRequest request) {
+
+		return "/mobile/home";
+	}
 
 	/**
 	 * 判断不同角色返回的页面
@@ -81,7 +94,7 @@ public class BaseController {
 
 		String result = request.getParameter("result");
 		if ("failed".equals(result)) {
-			model.addAttribute("result_msg", "登陆失败");
+			model.addAttribute("result_msg", "登录失败");
 		}
 
 		if (SecurityContextHolder.getContext().getAuthentication() == null){
@@ -103,7 +116,9 @@ public class BaseController {
 			this.appendBaseInfo(model);
 			
 			return "home";
-		} else {
+		}  else if (grantedAuthorities.contains(new GrantedAuthorityImpl("ROLE_MOBILE"))) {
+			return "redirect:mobile/home";
+		}  else {
 			return "home";
 		}
 	}
