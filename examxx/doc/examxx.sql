@@ -723,7 +723,15 @@ INSERT INTO `et_user` VALUES ('6', 'mobile1', null, '260acbffd3c30786febc29d7dd7
 INSERT INTO `et_r_user_role` VALUES ('6', '4');
 
 
-
-
+INSERT INTO `et_knowledge_point` VALUES ('5', '法律合规部', '2', '法律合规部', '1');
+INSERT INTO `et_knowledge_point` VALUES ('6', '尽职调查中心', '2', '尽职调查中心', '1');
+INSERT INTO `et_knowledge_point` VALUES ('7', '交易银行部', '2', '交易银行部', '1');
+INSERT INTO `et_knowledge_point` VALUES ('8', '投资银行部', '2', '投资银行部', '1');
+INSERT INTO `et_knowledge_point` VALUES ('9', '总行岗位资格', '2', '总行岗位资格', '1');
+INSERT INTO `et_knowledge_point` VALUES ('10', '信用审查部', '2', '信用审查部', '1');
+INSERT INTO `et_knowledge_point` VALUES ('11', '运营管理部', '2', '运营管理部', '1');
+INSERT INTO `et_knowledge_point` VALUES ('12', '企业金融部', '2', '企业金融部', '1');
+INSERT INTO `et_knowledge_point` VALUES ('13', '绿色金融部', '2', '绿色金融部', '1');
+INSERT INTO `et_knowledge_point` VALUES ('14', '风险管理部', '2', '风险管理部', '1');
 
 

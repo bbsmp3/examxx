@@ -12,7 +12,7 @@ String basePath = request.getScheme() + "://"
 	<base href="<%=basePath%>">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Multi-page template</title>
+	<title>企金考试系统</title>
 	<link rel="stylesheet" href="resources/jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
 	<link rel="stylesheet" href="resources/jqm/_assets/css/jqm-demos.css">
 	<link rel="shortcut icon" href="resources/jqm/favicon.ico">

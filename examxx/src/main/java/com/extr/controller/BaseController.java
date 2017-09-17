@@ -79,7 +79,7 @@ public class BaseController {
 	@RequestMapping(value = { "/mobile/home" }, method = RequestMethod.GET)
 	public String mobileHomePage(Model model, HttpServletRequest request) {
 
-		return "/mobile/home";
+		return "redirect:/mobile/exampaperfilter-0-1.html";
 	}
 
 	/**
