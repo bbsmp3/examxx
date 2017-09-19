@@ -34,8 +34,10 @@ String basePath = request.getScheme() + "://"
 		<div data-role="header">
 			<h1>企金考试系统</h1>
 		</div>
-		<ul id="exampaper-body">${htmlStr }
-		</ul>
+		<div id="exampaper-body" data-role="collapsibleset" data-theme="a" >
+			${htmlStr }
+			
+		</div>
 		<div data-role="footer">
 			<h5>分行科技部 Copyright ©</h5>
 		</div>
@@ -43,7 +45,7 @@ String basePath = request.getScheme() + "://"
 
 	</div>
 	<!-- /page -->
-
+	<script type="text/javascript" src="resources/js/mobile-paper-examing.js"></script>
 </body>
 </html>
 

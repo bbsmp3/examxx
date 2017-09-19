@@ -129,7 +129,7 @@ public class MobileController {
 		StringBuilder sb = new StringBuilder();
 		for (QuestionQueryResult question : questionList) {
 			QuestionAdapter adapter = new QuestionAdapter(question, strUrl);
-			sb.append(adapter.getUserExamPaper());
+			sb.append(adapter.getMobileUserExamPaper());
 		}
 
 		model.addAttribute("examHistoryId", examHistory.getHistId());

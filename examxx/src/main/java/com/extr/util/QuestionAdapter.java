@@ -16,6 +16,8 @@ public class QuestionAdapter {
 	private AnswerSheetItem answerSheetItem;
 	private QuestionQueryResult questionQueryResult;
 	private String baseUrl;
+	
+	private static final int SHORT_TITLE_LENGTH = 30;
 
 	public String pointStrFormat(float point){
 		
@@ -1334,6 +1336,292 @@ public class QuestionAdapter {
 
 		}
 		sb.append("</li>");
+		return sb.toString();
+	}
+	
+	public String getMobileUserExamPaper() {
+		StringBuilder sb = new StringBuilder();
+
+		switch (questionQueryResult.getQuestionTypeId()) {
+		case 1:
+			sb.append("<div class=\"question qt-singlechoice\"  data-role=\"collapsible\">");
+			break;
+		case 2:
+			sb.append("<div class=\"question qt-multiplechoice\" data-role=\"collapsible\">");
+			break;
+		case 3:
+			sb.append("<div class=\"question qt-trueorfalse\" data-role=\"collapsible\">");
+			break;
+		case 4:
+			sb.append("<div class=\"question qt-fillblank\" data-role=\"collapsible\">");
+			break;
+		case 5:
+			sb.append("<div class=\"question qt-shortanswer\" data-role=\"collapsible\">");
+			break;
+		case 6:
+			sb.append("<div class=\"question qt-essay\" data-role=\"collapsible\">");
+			break;
+		case 7:
+			sb.append("<div class=\"question qt-analytical\" data-role=\"collapsible\">");
+			break;
+		default:
+			break;
+		}
+		
+		String title = questionContent.getTitle();
+		int titleLength = title.length();
+		sb.append("<h2>").append("<span class=\"question-no\">").append("</span>")
+						.append(title.substring(0, titleLength < SHORT_TITLE_LENGTH ? titleLength : SHORT_TITLE_LENGTH))
+						.append("</h2>");
+	
+	
+		sb.append("<div class=\"question-title\">");
+		sb.append("<div class=\"question-title-icon\"></div>");
+		sb.append("<span class=\"question-no\">").append("</span>");
+		sb.append("<span class=\"question-type\" style=\"display: none;\">");
+
+		switch (questionQueryResult.getQuestionTypeId()) {
+		case 1:
+			sb.append("singlechoice").append("</span>");
+			sb.append("<span class=\"knowledge-point-id\" style=\"display: none;\">").append(questionQueryResult.getKnowledgePointId()).append("</span>");
+			sb.append("<span class=\"question-type-id\" style=\"display: none;\">").append(questionQueryResult.getQuestionTypeId()).append("</span>");
+			sb.append("<span>[单选题]</span>");
+			sb.append("<span class=\"question-point-content\">");
+			sb.append("<span>(</span><span class=\"question-point\">").append(pointStrFormat(questionQueryResult.getQuestionPoint())).append("</span><span>分)</span>");
+			sb.append("</span>");
+			//sb.append("<span>(</span><span class=\"question-point\">").append(pointStrFormat(questionQueryResult.getQuestionPoint())).append("</span><span>分)</span>");
+			sb.append("<span class=\"question-id\" style=\"display:none;\">")
+					.append(questionQueryResult.getQuestionId())
+					.append("</span>");
+			sb.append("</div>");
+			sb.append("<form class=\"question-body\">");
+			sb.append("<p class=\"question-body-text\">").append(questionContent.getTitle());
+			if (questionContent.getTitleImg() != null)
+				if (!questionContent.getTitleImg().trim().equals(""))
+					sb.append(
+							"<img class=\"question-content-img question-img\" src=\"")
+							.append(baseUrl)
+							.append(questionContent.getTitleImg())
+							.append("\" />");
+			sb.append("</p>");
+			Iterator<String> it1 = questionContent.getChoiceList().keySet()
+					.iterator();
+			sb.append("<ul data-role=\"listview\" data-theme=\"a\" data-divider-theme=\"b\">");
+			while (it1.hasNext()) {
+				sb.append("<li class=\"question-list-item\">");
+				String key = it1.next();
+				String value = questionContent.getChoiceList().get(key);
+				sb.append("<input type=\"radio\" value=\"")
+						.append(key)
+						.append("\" name=\"question-radio1\" class=\"question-input\"")
+						.append("id=\"question-radio-"+questionQueryResult.getQuestionId()+key+"\" >");
+				sb.append("<label for=\"question-radio-"+questionQueryResult.getQuestionId()+key+"\" >")
+						.append(key).append(": ").append(value)
+						.append("</label>");
+				if (questionContent.getChoiceImgList() != null)
+					if (questionContent.getChoiceImgList().containsKey(key))
+						sb.append(
+								"<img class=\"question-opt-img question-img\" src=\"")
+								.append(baseUrl)
+								.append(questionContent.getChoiceImgList().get(
+										key)).append("\" />");
+				sb.append("</span>");
+				sb.append("</li>");
+			}
+			sb.append("</ul>");
+			sb.append("</form>");
+			break;
+		case 2:
+			sb.append("multiplechoice").append("</span>");
+			sb.append("<span class=\"knowledge-point-id\" style=\"display: none;\">").append(questionQueryResult.getKnowledgePointId()).append("</span>");
+			sb.append("<span class=\"question-type-id\" style=\"display: none;\">").append(questionQueryResult.getQuestionTypeId()).append("</span>");
+			sb.append("<span>[多选题]</span>");
+			sb.append("<span class=\"question-point-content\">");
+			sb.append("<span>(</span><span class=\"question-point\">").append(pointStrFormat(questionQueryResult.getQuestionPoint())).append("</span><span>分)</span>");
+			sb.append("</span>");
+			//sb.append("<span>(</span><span class=\"question-point\">").append(pointStrFormat(questionQueryResult.getQuestionPoint())).append("</span><span>分)</span>");
+			sb.append("<span class=\"question-id\" style=\"display:none;\">")
+					.append(questionQueryResult.getQuestionId())
+					.append("</span>");
+			sb.append("</div>");
+			sb.append("<form class=\"question-body\">");
+			sb.append("<p class=\"question-body-text\">").append(questionContent.getTitle());
+			if (questionContent.getTitleImg() != null)
+				if (!questionContent.getTitleImg().trim().equals(""))
+					sb.append(
+							"<img class=\"question-content-img question-img\" src=\"")
+							.append(baseUrl)
+							.append(questionContent.getTitleImg())
+							.append("\" />");
+			sb.append("</p>");
+			Iterator<String> it2 = questionContent.getChoiceList().keySet()
+					.iterator();
+			sb.append("<ul data-role=\"listview\" data-theme=\"a\" data-divider-theme=\"b\">");
+			while (it2.hasNext()) {
+				sb.append("<li class=\"question-list-item\">");
+				String key = it2.next();
+				String value = questionContent.getChoiceList().get(key);
+				sb.append("<input type=\"checkbox\" value=\"")
+						.append(key)
+						.append("\" name=\"question-radio1\" class=\"question-input\">");
+				sb.append(key).append(": ").append(value);
+				if (questionContent.getChoiceImgList() != null)
+					if (questionContent.getChoiceImgList().containsKey(key))
+						sb.append(
+								"<img class=\"question-opt-img question-img\" src=\"")
+								.append(baseUrl)
+								.append(questionContent.getChoiceImgList().get(
+										key)).append("\" />");
+				sb.append("</span>");
+				sb.append("</li>");
+			}
+			sb.append("</ul>");
+			sb.append("</form>");
+			break;
+		case 3:
+			sb.append("trueorfalse").append("</span>");
+			sb.append("<span class=\"knowledge-point-id\" style=\"display: none;\">").append(questionQueryResult.getKnowledgePointId()).append("</span>");
+			sb.append("<span class=\"question-type-id\" style=\"display: none;\">").append(questionQueryResult.getQuestionTypeId()).append("</span>");
+			sb.append("<span>[判断题]</span>");
+			sb.append("<span class=\"question-point-content\">");
+			sb.append("<span>(</span><span class=\"question-point\">").append(pointStrFormat(questionQueryResult.getQuestionPoint())).append("</span><span>分)</span>");
+			sb.append("</span>");
+			//sb.append("<span>(</span><span class=\"question-point\">").append(pointStrFormat(questionQueryResult.getQuestionPoint())).append("</span><span>分)</span>");
+			sb.append("<span class=\"question-id\" style=\"display:none;\">")
+					.append(questionQueryResult.getQuestionId())
+					.append("</span>");
+			sb.append("</div>");
+			sb.append("<form class=\"question-body\">");
+			sb.append("<p class=\"question-body-text\">").append(questionContent.getTitle());
+			if (questionContent.getTitleImg() != null)
+				if (!questionContent.getTitleImg().trim().equals(""))
+					sb.append(
+							"<img class=\"question-content-img question-img\" src=\"")
+							.append(baseUrl)
+							.append(questionContent.getTitleImg())
+							.append("\" />");
+			sb.append("</p>");
+			sb.append("<ul data-role=\"listview\" data-theme=\"a\" data-divider-theme=\"b\">");
+			
+			sb.append("<li class=\"question-list-item\">").append(
+					"<input type=\"radio\" value=\"T\" name=\"question-radio2\" class=\"question-input\">")
+					.append("<span class=\"question-li-text\">正确</span>").append("</li>");
+			
+			sb.append("<li class=\"question-list-item\">").append("<input type=\"radio\" value=\"F\" name=\"question-radio2\" class=\"question-input\">")
+					.append("<span class=\"question-li-text\">错误</span>").append("</li>");
+			
+			sb.append("</ul>");
+			sb.append("</form>");
+			break;
+		case 4:
+			sb.append("fillblank").append("</span>");
+			sb.append("<span class=\"knowledge-point-id\" style=\"display: none;\">").append(questionQueryResult.getKnowledgePointId()).append("</span>");
+			sb.append("<span class=\"question-type-id\" style=\"display: none;\">").append(questionQueryResult.getQuestionTypeId()).append("</span>");
+			sb.append("<span>[填空题]</span>");
+			sb.append("<span class=\"question-point-content\">");
+			sb.append("<span>(</span><span class=\"question-point\">").append(pointStrFormat(questionQueryResult.getQuestionPoint())).append("</span><span>分)</span>");
+			sb.append("</span>");
+			//sb.append("<span>(</span><span class=\"question-point\">").append(pointStrFormat(questionQueryResult.getQuestionPoint())).append("</span><span>分)</span>");
+			sb.append("<span class=\"question-id\" style=\"display:none;\">")
+					.append(questionQueryResult.getQuestionId())
+					.append("</span>");
+			sb.append("</div>");
+			sb.append("<form class=\"question-body\">");
+			sb.append("<p class=\"question-body-text\">").append(questionContent.getTitle());
+			if (questionContent.getTitleImg() != null)
+				if (!questionContent.getTitleImg().trim().equals(""))
+					sb.append(
+							"<img class=\"question-content-img question-img\" src=\"")
+							.append(baseUrl)
+							.append(questionContent.getTitleImg())
+							.append("\" />");
+			sb.append("</p>");
+			sb.append("<textarea class=\"question-textarea\"></textarea>");
+			sb.append("</form>");
+			break;
+		case 5:
+			sb.append("shortanswer").append("</span>");
+			sb.append("<span class=\"knowledge-point-id\" style=\"display: none;\">").append(questionQueryResult.getKnowledgePointId()).append("</span>");
+			sb.append("<span class=\"question-type-id\" style=\"display: none;\">").append(questionQueryResult.getQuestionTypeId()).append("</span>");
+			sb.append("<span>[简答题]</span>");
+			sb.append("<span class=\"question-point-content\">");
+			sb.append("<span>(</span><span class=\"question-point\">").append(pointStrFormat(questionQueryResult.getQuestionPoint())).append("</span><span>分)</span>");
+			sb.append("</span>");
+			//sb.append("<span>(</span><span class=\"question-point\">").append(pointStrFormat(questionQueryResult.getQuestionPoint())).append("</span><span>分)</span>");
+			sb.append("<span class=\"question-id\" style=\"display:none;\">")
+					.append(questionQueryResult.getQuestionId())
+					.append("</span>");
+			sb.append("</div>");
+			sb.append("<form class=\"question-body\">");
+			sb.append("<p class=\"question-body-text\">").append(questionContent.getTitle());
+			if (questionContent.getTitleImg() != null)
+				if (!questionContent.getTitleImg().trim().equals(""))
+					sb.append(
+							"<img class=\"question-content-img question-img\" src=\"")
+							.append(baseUrl)
+							.append(questionContent.getTitleImg())
+							.append("\" />");
+			sb.append("</p>");
+			sb.append("<textarea class=\"question-textarea\"></textarea>");
+			sb.append("</form>");
+			break;
+		case 6:
+			sb.append("essay").append("</span>");
+			sb.append("<span class=\"knowledge-point-id\" style=\"display: none;\">").append(questionQueryResult.getKnowledgePointId()).append("</span>");
+			sb.append("<span class=\"question-type-id\" style=\"display: none;\">").append(questionQueryResult.getQuestionTypeId()).append("</span>");
+			sb.append("<span>[论述题]</span>");
+			sb.append("<span class=\"question-point-content\">");
+			sb.append("<span>(</span><span class=\"question-point\">").append(pointStrFormat(questionQueryResult.getQuestionPoint())).append("</span><span>分)</span>");
+			sb.append("</span>");
+			//sb.append("<span>(</span><span class=\"question-point\">").append(pointStrFormat(questionQueryResult.getQuestionPoint())).append("</span><span>分)</span>");
+			sb.append("<span class=\"question-id\" style=\"display:none;\">")
+					.append(questionQueryResult.getQuestionId())
+					.append("</span>");
+			sb.append("</div>");
+			sb.append("<form class=\"question-body\">");
+			sb.append("<p class=\"question-body-text\">").append(questionContent.getTitle());
+			if (questionContent.getTitleImg() != null)
+				if (!questionContent.getTitleImg().trim().equals(""))
+					sb.append(
+							"<img class=\"question-content-img question-img\" src=\"")
+							.append(baseUrl)
+							.append(questionContent.getTitleImg())
+							.append("\" />");
+			sb.append("</p>");
+			sb.append("<textarea class=\"question-textarea\"></textarea>");
+			sb.append("</form>");
+			break;
+		case 7:
+			sb.append("analytical").append("</span>");
+			sb.append("<span class=\"knowledge-point-id\" style=\"display: none;\">").append(questionQueryResult.getKnowledgePointId()).append("</span>");
+			sb.append("<span class=\"question-type-id\" style=\"display: none;\">").append(questionQueryResult.getQuestionTypeId()).append("</span>");
+			sb.append("<span>[分析题]</span>");
+			sb.append("<span class=\"question-point-content\">");
+			sb.append("<span>(</span><span class=\"question-point\">").append(pointStrFormat(questionQueryResult.getQuestionPoint())).append("</span><span>分)</span>");
+			sb.append("</span>");
+			//sb.append("<span>(</span><span class=\"question-point\">").append(pointStrFormat(questionQueryResult.getQuestionPoint())).append("</span><span>分)</span>");
+			sb.append("<span class=\"question-id\" style=\"display:none;\">")
+					.append(questionQueryResult.getQuestionId())
+					.append("</span>");
+			sb.append("</div>");
+			sb.append("<form class=\"question-body\">");
+			sb.append("<p class=\"question-body-text\">").append(questionContent.getTitle());
+			if (questionContent.getTitleImg() != null)
+				if (!questionContent.getTitleImg().trim().equals(""))
+					sb.append(
+							"<img class=\"question-content-img question-img\" src=\"")
+							.append(baseUrl)
+							.append(questionContent.getTitleImg())
+							.append("\" />");
+			sb.append("</p>");
+			sb.append("<textarea class=\"question-textarea\"></textarea>");
+			sb.append("</form>");
+			break;
+		default:
+			break;
+
+		}
+		sb.append("</div>");
 		return sb.toString();
 	}
 }
