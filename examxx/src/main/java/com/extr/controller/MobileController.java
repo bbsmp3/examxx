@@ -2,6 +2,7 @@ package com.extr.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.extr.controller.ExamController.ReportResult;
 import com.extr.controller.domain.AnswerSheetItem;
+import com.extr.controller.domain.ExamFinishParam;
 import com.extr.controller.domain.Message;
 import com.extr.controller.domain.PaperCreatorParam;
 import com.extr.controller.domain.QuestionQueryResult;
@@ -47,6 +50,24 @@ public class MobileController {
 
 	private static final String SUCCESS_Message = "success";
 	private static final String failed_Message = "failed";
+
+	public class ReportResult {
+		public int sum;
+		public int rightTimes;
+		public int wrongTimes;
+
+		public int getSum() {
+			return sum;
+		}
+
+		public int getRightTimes() {
+			return rightTimes;
+		}
+
+		public int getWrongTimes() {
+			return wrongTimes;
+		}
+	};
 
 
 	@RequestMapping(value = "/mobile/exampaperfilter-{papertype}-{page}.html", method = RequestMethod.GET)
@@ -137,6 +158,108 @@ public class MobileController {
 		model.addAttribute("duration", duration * 60);
 		model.addAttribute("htmlStr", sb.toString());
 		return "mobile/examing";
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/mobile/exam-submit", method = RequestMethod.POST)
+	public @ResponseBody
+	Message mobileFinishExam(@RequestBody ExamFinishParam efp) {
+
+		Message message = new Message();
+		try {
+			ExamHistory examHistory = examService
+					.getUserExamHistoryByHistId(efp.getExam_history_id());
+			List<QuestionQueryResult> questionList = Object2Xml.toBean(examHistory.getContent(), List.class);
+			float pointGet = 0f;
+			for(QuestionQueryResult qqr : questionList){
+				if(qqr.getAnswer().equals(efp.getAs().get(qqr.getQuestionId()).getAnswer()))
+					pointGet += qqr.getQuestionPoint();
+			}
+			//计算得分
+			examHistory.setPointGet(pointGet);
+			examHistory.setAnswerSheet(Object2Xml.toXml(efp.getAs()));
+			examHistory.setSubmitTime(new Date());
+			examHistory.setDuration(efp.getDuration());
+			examService.updateExamHistory(examHistory);
+		} catch (Exception e) {
+			e.printStackTrace();
+			message.setResult(e.getClass().getName());
+		}
+
+		return message;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "mobile/finish-exam/{examPaperId}", method = RequestMethod.GET)
+	public String mobilePaperExamFinishedPage(Model model,
+			@PathVariable("examPaperId") int examPaperId) {
+		UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal();
+
+		ExamHistory examHistory = examService
+				.getUserExamHistoryByUserIdAndExamPaperId(userInfo.getUserid(),
+						examPaperId);
+		HashMap<Integer, AnswerSheetItem> hm = Object2Xml.toBean(
+				examHistory.getAnswerSheet(), HashMap.class);
+
+		int total = hm.size();
+		int wrong = 0;
+		int right = 0;
+
+		HashMap<String, ReportResult> reportResultList = new HashMap<String, ReportResult>();
+		List<QuestionQueryResult> questionQueryList = Object2Xml.toBean(
+				examHistory.getContent(), List.class);
+		List<Integer> idList = new ArrayList<Integer>();
+		HashMap<Integer, Boolean> answer = new HashMap<Integer, Boolean>();
+		for (QuestionQueryResult q : questionQueryList) {
+			String pointName = q.getPointName().split(">")[1];
+			idList.add(q.getQuestionId());
+			if (q.getQuestionTypeId() != 1 && q.getQuestionTypeId() != 2
+					&& q.getQuestionTypeId() != 3)
+				continue;
+			if (hm.get(q.getQuestionId()) != null) {
+				if (q.getAnswer().equals(hm.get(q.getQuestionId()).getAnswer())) {
+					answer.put(q.getQuestionId(), true);
+					right++;
+					if (reportResultList.containsKey(pointName)) {
+						ReportResult r = reportResultList.get(pointName);
+						r.sum++;
+						r.rightTimes++;
+						reportResultList.put(pointName, r);
+					} else {
+						ReportResult r = new ReportResult();
+						r.sum = 1;
+						r.rightTimes = 1;
+						reportResultList.put(pointName, r);
+					}
+				} else {
+					answer.put(q.getQuestionId(), false);
+					wrong++;
+					if (reportResultList.containsKey(pointName)) {
+						ReportResult r = reportResultList.get(pointName);
+						r.sum++;
+						r.wrongTimes++;
+						reportResultList.put(pointName, r);
+					} else {
+						ReportResult r = new ReportResult();
+						r.sum = 1;
+						r.wrongTimes = 1;
+						reportResultList.put(pointName, r);
+					}
+				}
+				hm.remove(q.getQuestionId());
+			}
+		}
+
+		model.addAttribute("total", total);
+		model.addAttribute("wrong", wrong);
+		model.addAttribute("right", right);
+		model.addAttribute("reportResultList", reportResultList);
+		model.addAttribute("create_time", examHistory.getCreateTime());
+		model.addAttribute("answer", answer);
+		model.addAttribute("idList", idList);
+		model.addAttribute("examPaperId", examPaperId);
+		return "mobile/paper-exam-finished";
 	}
 
 }

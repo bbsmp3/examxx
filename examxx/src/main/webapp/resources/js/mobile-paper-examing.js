@@ -1,8 +1,18 @@
-$(function() {
-	modal.prepare();
-	examing.initial();
-
+//$(function() {
+//	modal.prepare();
+//	examing.initial();
+//
+//});
+$(document).on("mobileinit", function () {
+	$.mobile.ajaxEnabled = false;
+	//examing.initial();
 });
+
+$(document).on("pagecreate",function(){
+	examing.addNumber(); 
+	examing.bindSubmit();
+});
+
 
 var examing = {
 	initial : function initial() {
@@ -10,7 +20,7 @@ var examing = {
 		
 		this.refreshNavi();
 		this.bindNaviBehavior();
-		this.addNumber();
+//		this.addNumber();
 //		this.securityHandler();
 
 		this.bindOptClick();
@@ -20,7 +30,7 @@ var examing = {
 		this.bindFinishOne();
 		this.startTimer();
 
-		this.bindSubmit();
+		
 	},
 	
 	fixSideBar : function fixSideBar() {
@@ -385,15 +395,14 @@ var examing = {
 	},
 
 	bindSubmit : function bindSubmit() {
-		$("#question-submit button").click(function() {
-			if (confirm("确认交卷吗？")) {
-				examing.finishExam();
-			}
-		});
+		  $("#a-submit").on("tap",function(){  
+			  examing.finishExam();
+		  }); 
 	},
 
 	finishExam : function finishExam() {
-		modal.showProgress();
+		
+		//modal.showProgress();
 		var answerSheet = examing.genrateAnswerSheet();
 		var data = new Object();
 		var exam_history_id = $("#hist-id").val();
@@ -405,14 +414,14 @@ var examing = {
 		var minutes = parseInt(time[1]);
 		var seconds = parseInt(time[2]);
 		data.duration = hours * 3600 + minutes * 60 + seconds;
-		$("#question-submit button").attr("disabled", "disabled");
+		$("#question-submit input").attr("disabled", "");
 		var request = $.ajax({
 			headers : {
 				'Accept' : 'application/json',
 				'Content-Type' : 'application/json'
 			},
 			type : "POST",
-			url : "student/exam-submit",
+			url : "mobile/exam-submit",
 			data : JSON.stringify(data)
 		});
 
@@ -422,18 +431,18 @@ var examing = {
 			if (message.result == "success") {
 				$(window).unbind('beforeunload');
 				util.success("交卷成功！", function() {
-					window.location.replace(document.getElementsByTagName('base')[0].href + 'student/finish-exam/' + $("#paper-id").val());
+					window.location.replace(document.getElementsByTagName('base')[0].href + 'mobile/finish-exam/' + $("#paper-id").val());
 
 				});
 			} else {
 				util.error(message.result);
-				$("#question-submit button").removeAttr("disabled");
+				$("#question-submit input").removeAttr("disabled");
 			}
 			modal.hideProgress();
 		});
 		request.fail(function(jqXHR, textStatus) {
 			alert("系统繁忙请稍后尝试");
-			$("#question-submit button").removeAttr("disabled");
+			$("#question-submit input").removeAttr("disabled");
 			modal.hideProgress();
 		});
 	},

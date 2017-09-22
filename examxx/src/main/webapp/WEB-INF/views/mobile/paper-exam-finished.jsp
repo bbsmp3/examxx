@@ -31,29 +31,29 @@ String basePath = request.getScheme() + "://"
 		<div data-role="header">
 			<h1>企金考试系统</h1>
 		</div>
-		<input type="hidden" id="hist-id" value="${examHistoryId }"> 
-		<input type="hidden" id="paper-id" value="${examPaperId }">
-		<div id="exampaper-body" data-role="collapsibleset" data-theme="a">
-			${htmlStr }</div>
-		<a href="#popupDialog" data-rel="popup" id="a-popup"
-			data-position-to="window" data-transition="pop"
-			class="ui-btn ui-corner-all ui-shadow  ui-icon-check ui-btn-icon-left ui-btn-a">我要交卷</a>
-
-		<div data-role="popup" id="popupDialog" data-overlay-theme="a"
-			data-theme="a" data-dismissible="false" style="max-width: 400px;">
-			<div data-role="header" data-theme="a">
-				<h1>确认提交？</h1>
-			</div>
-			<div role="main" class="ui-content">
-				<h3 class="ui-title">是否结束考试？确认提交后将无法再次答题</h3>
-				<a href="#" id="a-submit"
-					class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
-					data-transition="flow">确认</a> <a href="#"
-					class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
-					data-rel="back">取消</a>
-
-			</div>
+		<div class="form-line add-role">
+			<span class="form-label">考试名称：</span> <span> 练习考试 </span>
 		</div>
+		<div class="form-line add-role">
+			<span class="form-label">交卷时间：</span> 
+			<span> <fmt:formatDate
+					value="${create_time }" type="time" timeStyle="full"
+					pattern="yyyy-MM-dd HH:mm" />
+			</span>
+		</div>
+		<div class="form-line add-role">
+			<span class="form-label">总题目：</span> <span class="label label-info">
+				${total } </span>
+		</div>
+		<div class="form-line exam-report-correct">
+			<span class="form-label">正确题目：</span> <span
+				class="label label-success"> ${right } </span>
+		</div>
+		<div class="form-line exam-report-error">
+			<span class="form-label">错误题目：</span> <span
+				class="label label-danger"> ${wrong } </span>
+		</div>
+
 		<div data-role="footer">
 			<h5>分行科技部 Copyright ©</h5>
 		</div>
@@ -61,7 +61,7 @@ String basePath = request.getScheme() + "://"
 
 	</div>
 	<!-- /page -->
-	
+
 
 </body>
 </html>
