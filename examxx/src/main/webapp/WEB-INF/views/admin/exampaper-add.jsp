@@ -137,9 +137,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="form-line add-update-exampaper-type">
 									<span class="form-label"><span class="warning-label">*</span>试卷类型：</span>
 									<select class="df-input-narrow">
+										<option value="4" selected="selected">手机随机考试</option>
 										<option value="3">专家试卷</option>
-										<option value="2" selected="selected">模拟考试</option>
+										<option value="2">模拟考试</option>
 										<option value="1">随机试卷</option>
+										
 										
 									</select>
 									<span class="form-message"></span>

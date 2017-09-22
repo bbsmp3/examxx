@@ -78,8 +78,7 @@ public class MobileController {
 		Page<ExamPaper> pageModel = new Page<ExamPaper>();
 		pageModel.setPageNo(page);
 		pageModel.setPageSize(10);
-		List<ExamPaper> paper = examService.getExamPaperListByPaperType(
-				papertype, pageModel);
+		List<ExamPaper> paper = examService.getExamPaperList4Exam(4);
 		String pageStr = PagingUtil.getPageBtnlink(page,
 				pageModel.getTotalPage());
 		model.addAttribute("papertype", papertype);

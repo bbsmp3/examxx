@@ -139,6 +139,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<span data-id="3" <c:if test="${papertype == '3' }">
 												 class="label label-info"
 											</c:if>>专家试卷</span>
+										<span data-id="4" <c:if test="${papertype == '4' }">
+												 class="label label-info"
+											</c:if>>手机随机考试</span>
 									</dd>
 								</dl>
 								
@@ -177,6 +180,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 													<c:if test="${item.paper_type == '3' }">
 														<span class="td-paper-type" data-id="${item.paper_type}">
 														专家试卷
+														</span>
+													</c:if>
+													<c:if test="${item.paper_type == '4' }">
+														<span class="td-paper-type" data-id="${item.paper_type}">
+														手机随机考试
 														</span>
 													</c:if>
 												</td>

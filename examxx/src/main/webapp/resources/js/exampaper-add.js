@@ -196,8 +196,8 @@ exampaper_add = {
 			} else if (isNaN(duration)) {
 				$(".add-update-duration .form-message").text("请输入数字");
 				return false;
-			} else if (!(duration > 30 && duration < 241)) { 
-				$(".add-update-duration .form-message").text("数字范围无效，考试的时长必须设置在30到240的范围内");
+			} else if (!(duration > 0 && duration < 241)) { 
+				$(".add-update-duration .form-message").text("数字范围无效，考试的时长必须设置在1到240的范围内");
 				return false;
 			} else {
 				return true;
