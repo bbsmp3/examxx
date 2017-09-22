@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme() + "://"
@@ -31,27 +32,40 @@ String basePath = request.getScheme() + "://"
 		<div data-role="header">
 			<h1>企金考试系统</h1>
 		</div>
-		<div class="form-line add-role">
-			<span class="form-label">考试名称：</span> <span> 练习考试 </span>
-		</div>
-		<div class="form-line add-role">
-			<span class="form-label">交卷时间：</span> 
-			<span> <fmt:formatDate
-					value="${create_time }" type="time" timeStyle="full"
-					pattern="yyyy-MM-dd HH:mm" />
-			</span>
-		</div>
-		<div class="form-line add-role">
-			<span class="form-label">总题目：</span> <span class="label label-info">
-				${total } </span>
-		</div>
-		<div class="form-line exam-report-correct">
-			<span class="form-label">正确题目：</span> <span
-				class="label label-success"> ${right } </span>
-		</div>
-		<div class="form-line exam-report-error">
-			<span class="form-label">错误题目：</span> <span
-				class="label label-danger"> ${wrong } </span>
+		<div role="main" class="ui-content">
+			<div class="form-line add-role">
+				<span class="form-label">考试名称：</span> <span>${examName } </span>
+			</div>
+			<div class="form-line add-role">
+				<span class="form-label">开考时间：</span> 
+				<span> <fmt:formatDate
+						value="${create_time }" type="time" timeStyle="full"
+						pattern="yyyy-MM-dd HH:mm" />
+				</span>
+			</div>
+			<div class="form-line add-role">
+				<span class="form-label">交卷时间：</span> 
+				<span> <fmt:formatDate
+						value="${submit_time }" type="time" timeStyle="full"
+						pattern="yyyy-MM-dd HH:mm" />
+				</span>
+			</div>
+			<div class="form-line add-role">
+				<span class="form-label">总题目：</span> <span class="label label-info">
+					${total } </span>
+			</div>
+			<div class="form-line exam-report-correct">
+				<span class="form-label">正确题目：</span> <span
+					class="label label-success"> ${right } </span>
+			</div>
+			<div class="form-line exam-report-error">
+				<span class="form-label">错误题目：</span> <span
+					class="label label-danger"> ${wrong } </span>
+			</div>
+			<div class="form-line">
+				<span class="form-label">最终得分：</span> <span
+					class="label label-danger"> ${pointGet } </span>
+			</div>
 		</div>
 
 		<div data-role="footer">

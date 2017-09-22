@@ -16,7 +16,7 @@
 		select
 		id histId,user_id userId,exam_paper_id
 		examPaperId,content,create_time createTime,answer_sheet
-		answerSheet,duration
+		answerSheet,duration,point_get pointGet,submit_time submitTime 
 		from et_user_exam_history where user_id=#{userId}
 		and
 		exam_paper_id=#{examPaperId}

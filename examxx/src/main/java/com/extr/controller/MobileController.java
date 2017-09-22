@@ -178,7 +178,7 @@ public class MobileController {
 			examHistory.setPointGet(pointGet);
 			examHistory.setAnswerSheet(Object2Xml.toXml(efp.getAs()));
 			examHistory.setSubmitTime(new Date());
-			examHistory.setDuration(efp.getDuration());
+			//examHistory.setDuration(efp.getDuration());
 			examService.updateExamHistory(examHistory);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -200,6 +200,7 @@ public class MobileController {
 						examPaperId);
 		HashMap<Integer, AnswerSheetItem> hm = Object2Xml.toBean(
 				examHistory.getAnswerSheet(), HashMap.class);
+		ExamPaper examPaper = examService.getExamPaperById(examHistory.getExamPaperId());
 
 		int total = hm.size();
 		int wrong = 0;
@@ -255,6 +256,10 @@ public class MobileController {
 		model.addAttribute("right", right);
 		model.addAttribute("reportResultList", reportResultList);
 		model.addAttribute("create_time", examHistory.getCreateTime());
+		model.addAttribute("submit_time", examHistory.getSubmitTime());
+		model.addAttribute("pointGet", examHistory.getPointGet());
+		model.addAttribute("duration", examHistory.getDuration());
+		model.addAttribute("examName", examPaper.getName());
 		model.addAttribute("answer", answer);
 		model.addAttribute("idList", idList);
 		model.addAttribute("examPaperId", examPaperId);
