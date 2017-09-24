@@ -16,6 +16,7 @@ String basePath = request.getScheme() + "://"
 <title>企金考试系统</title>
 <link rel="stylesheet" href="resources/jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
 <link rel="stylesheet" href="resources/jqm/_assets/css/jqm-demos.css">
+<link rel="stylesheet" href="resources/jqm/css/themes/theme-classic.css">
 <link rel="shortcut icon" href="resources/jqm/favicon.ico">
 <script src="resources/jqm/js/jquery.js"></script>
 <script src="resources/jqm/_assets/js/index.js"></script>
@@ -29,24 +30,42 @@ String basePath = request.getScheme() + "://"
 
 <body>
 
-	<div data-role="page">
+	<div data-role="page" class="ui-page-theme-b">
 
-		<div data-role="header">
+		<div data-role="header" >
+			<a href="#" class="ui-btn ui-btn-left ui-icon-user ui-btn-icon-left">${truename}</a> 
+			<a href="j_spring_security_logout" class="ui-btn ui-btn-right ui-icon-action ui-btn-icon-right">退出</a> 
 			<h1>企金考试系统</h1>
 		</div>
+				<c:if test="${papertype == 'ps' }">
+		<div data-role="popup" id="popupDialogPs"
+					data-overlay-theme="a" data-theme="b" data-dismissible="false"
+					style="max-width: 400px;">
+					<div data-role="header" data-theme="b">
+						<h1>试卷已提交</h1>
+					</div>
+					<div role="main" class="ui-content" data-theme="b">
+						<h3 class="ui-title">试卷已提交，无法再次考试！</h3>
+						<a href="#"
+							class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
+							data-rel="back">知道了</a>
+
+					</div>
+				</div>
+	</c:if>
 		<div data-role="controlgroup">
 			<c:forEach items="${paper }" var="item">
 				<a href="#popupDialog${item.id}" data-rel="popup"
 					data-position-to="window" data-transition="pop"
-					class="ui-btn ui-corner-all ui-shadow  ui-icon-forward ui-btn-icon-left ui-btn-a">${item.name }</a>
+					class="ui-btn ui-corner-all ui-shadow  ui-icon-forward ui-btn-icon-left ui-btn-c">${item.name }</a>
 
 				<div data-role="popup" id="popupDialog${item.id}"
-					data-overlay-theme="a" data-theme="a" data-dismissible="false"
+					data-overlay-theme="a" data-theme="b" data-dismissible="false"
 					style="max-width: 400px;">
-					<div data-role="header" data-theme="a">
+					<div data-role="header" data-theme="b">
 						<h1>是否进入考试?</h1>
 					</div>
-					<div role="main" class="ui-content">
+					<div role="main" class="ui-content" data-theme="b">
 						<h3 class="ui-title">是否进入考试 ${item.name}?
 							持续时间${item.duration}分钟</h3>
 						<a href="mobile/examing/${item.id}"
@@ -60,11 +79,12 @@ String basePath = request.getScheme() + "://"
 				</div>
 			</c:forEach>
 		</div>
+	
 		<div data-role="footer">
 			<h5>分行科技部 Copyright ©</h5>
 		</div>
 		<!-- /footer -->
-
+		
 	</div>
 	<!-- /page -->
 

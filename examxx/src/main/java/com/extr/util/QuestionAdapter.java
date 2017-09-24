@@ -1370,9 +1370,9 @@ public class QuestionAdapter {
 		
 		String title = questionContent.getTitle();
 		int titleLength = title.length();
-		sb.append("<h2>").append("<span class=\"question-no\">").append("</span>")
+		sb.append("<h4>").append("<span class=\"question-no\">").append("</span>")
 						.append(title.substring(0, titleLength < SHORT_TITLE_LENGTH ? titleLength : SHORT_TITLE_LENGTH))
-						.append("</h2>");
+						.append("</h4>");
 	
 	
 		sb.append("<div class=\"question-title\">");
@@ -1406,15 +1406,16 @@ public class QuestionAdapter {
 			sb.append("</p>");
 			Iterator<String> it1 = questionContent.getChoiceList().keySet()
 					.iterator();
-			sb.append("<ul data-role=\"listview\" data-theme=\"a\" data-divider-theme=\"b\">");
+			//sb.append("<ul data-role=\"listview\" data-theme=\"a\" data-divider-theme=\"b\">");
+			sb.append("<fieldset data-role=\"controlgroup\">");
 			while (it1.hasNext()) {
-				sb.append("<li class=\"question-list-item\">");
+				//sb.append("<li class=\"question-list-item\">");
 				String key = it1.next();
 				String value = questionContent.getChoiceList().get(key);
 				sb.append("<input type=\"radio\" value=\"")
 						.append(key)
 						.append("\" name=\"question-radio1\" class=\"question-input\"")
-						.append("id=\"question-radio-"+questionQueryResult.getQuestionId()+key+"\" >");
+						.append(" id=\"question-radio-"+questionQueryResult.getQuestionId()+key+"\" >");
 				sb.append("<label for=\"question-radio-"+questionQueryResult.getQuestionId()+key+"\" >")
 						.append(key).append(": ").append(value)
 						.append("</label>");
@@ -1426,9 +1427,10 @@ public class QuestionAdapter {
 								.append(questionContent.getChoiceImgList().get(
 										key)).append("\" />");
 				sb.append("</span>");
-				sb.append("</li>");
+				//sb.append("</li>");
 			}
-			sb.append("</ul>");
+			//sb.append("</ul>");
+			sb.append("</fieldset>");
 			sb.append("</form>");
 			break;
 		case 2:
@@ -1456,15 +1458,19 @@ public class QuestionAdapter {
 			sb.append("</p>");
 			Iterator<String> it2 = questionContent.getChoiceList().keySet()
 					.iterator();
-			sb.append("<ul data-role=\"listview\" data-theme=\"a\" data-divider-theme=\"b\">");
+			//sb.append("<ul data-role=\"listview\" data-theme=\"a\" data-divider-theme=\"b\">");
+			sb.append("<fieldset data-role=\"controlgroup\">");
 			while (it2.hasNext()) {
-				sb.append("<li class=\"question-list-item\">");
+				//sb.append("<li class=\"question-list-item\">");
 				String key = it2.next();
 				String value = questionContent.getChoiceList().get(key);
 				sb.append("<input type=\"checkbox\" value=\"")
 						.append(key)
-						.append("\" name=\"question-radio1\" class=\"question-input\">");
-				sb.append(key).append(": ").append(value);
+						.append("\" name=\"question-radio1\" class=\"question-input\"")
+						.append(" id=\"question-radio-"+questionQueryResult.getQuestionId()+key+"\" >");
+				sb.append("<label for=\"question-radio-"+questionQueryResult.getQuestionId()+key+"\" >")
+				.append(key).append(": ").append(value)
+				.append("</label>");
 				if (questionContent.getChoiceImgList() != null)
 					if (questionContent.getChoiceImgList().containsKey(key))
 						sb.append(
@@ -1473,9 +1479,10 @@ public class QuestionAdapter {
 								.append(questionContent.getChoiceImgList().get(
 										key)).append("\" />");
 				sb.append("</span>");
-				sb.append("</li>");
+				//sb.append("</li>");
 			}
-			sb.append("</ul>");
+			//sb.append("</ul>");
+			sb.append("</fieldset>");
 			sb.append("</form>");
 			break;
 		case 3:
@@ -1501,16 +1508,32 @@ public class QuestionAdapter {
 							.append(questionContent.getTitleImg())
 							.append("\" />");
 			sb.append("</p>");
-			sb.append("<ul data-role=\"listview\" data-theme=\"a\" data-divider-theme=\"b\">");
+			//sb.append("<ul data-role=\"listview\" data-theme=\"a\" data-divider-theme=\"b\">");
+			sb.append("<fieldset data-role=\"controlgroup\">");
+			sb.append("<input type=\"radio\" value=\"T\"")
+				.append(" class=\"question-input\"")
+				.append(" id=\"question-radio-"+questionQueryResult.getQuestionId()+"t\" >");
+			sb.append("<label for=\"question-radio-"+questionQueryResult.getQuestionId()+"t\" >")
+				.append("正确")
+				.append("</label>");
+			sb.append("<input type=\"radio\" value=\"F\"")
+				.append(" class=\"question-input\"")
+				.append(" id=\"question-radio-"+questionQueryResult.getQuestionId()+"f\" >");
+			sb.append("<label for=\"question-radio-"+questionQueryResult.getQuestionId()+"f\" >")
+				.append("错误")
+				.append("</label>");
+			//sb.append("<li class=\"question-list-item\">");
+			//sb.append("<input type=\"radio\" value=\"T\" name=\"question-radio2\" class=\"question-input\">")
+			//		.append("<span class=\"question-li-text\">正确</span>");
+			//sb.append("</li>");
 			
-			sb.append("<li class=\"question-list-item\">").append(
-					"<input type=\"radio\" value=\"T\" name=\"question-radio2\" class=\"question-input\">")
-					.append("<span class=\"question-li-text\">正确</span>").append("</li>");
+			//sb.append("<li class=\"question-list-item\">");
+			//sb.append("<input type=\"radio\" value=\"F\" name=\"question-radio2\" class=\"question-input\">")
+			//		.append("<span class=\"question-li-text\">错误</span>");
+			//sb.append("</li>");
 			
-			sb.append("<li class=\"question-list-item\">").append("<input type=\"radio\" value=\"F\" name=\"question-radio2\" class=\"question-input\">")
-					.append("<span class=\"question-li-text\">错误</span>").append("</li>");
-			
-			sb.append("</ul>");
+			//sb.append("</ul>");
+			sb.append("</fieldset>");
 			sb.append("</form>");
 			break;
 		case 4:

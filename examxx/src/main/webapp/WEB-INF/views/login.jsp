@@ -15,6 +15,7 @@ String basePath = request.getScheme() + "://"
 	<title>企金考试系统</title>
 	<link rel="stylesheet" href="resources/jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
 	<link rel="stylesheet" href="resources/jqm/_assets/css/jqm-demos.css">
+	<link rel="stylesheet" href="resources/jqm/css/themes/theme-classic.css">
 	<link rel="shortcut icon" href="resources/jqm/favicon.ico">
 	<script src="resources/jqm/js/jquery.js"></script>
 	<script src="resources/jqm/_assets/js/index.js"></script>
@@ -28,7 +29,7 @@ String basePath = request.getScheme() + "://"
 
 <body>
 
-<div data-role="page">
+<div data-role="page" class="ui-page-theme-b">
 
 	<div data-role="header">
 		<h1>企金考试系统</h1>

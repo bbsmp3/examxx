@@ -11,6 +11,7 @@ $(document).on("mobileinit", function () {
 $(document).on("pagecreate",function(){
 	examing.addNumber(); 
 	examing.bindSubmit();
+	examing.startTimer();
 });
 
 
@@ -269,15 +270,20 @@ var examing = {
 		var timestamp = parseInt($("#exam-timestamp").text());
 		var int = setInterval(function() {
 			$("#exam-timestamp").text(timestamp);
-			$("#exam-clock").text(examing.toHHMMSS(timestamp));
-			if(timestamp < 600){
-				var exam_clock = $("#question-time");
-				exam_clock.removeClass("question-time-normal");
-				exam_clock.addClass("question-time-warning");
+			$("#exam-clock").text("剩余时间：" + examing.toHHMMSS(timestamp));
+//			if(timestamp < 600){
+//				var exam_clock = $("#question-time");
+//				exam_clock.removeClass("question-time-normal");
+//				exam_clock.addClass("question-time-warning");
+//			}
+			timestamp--;
+			if(timestamp <= 0) {
+				examing.examTimeOut(int); 
 			}
-			
-			timestamp-- || examing.examTimeOut(int); 
 		}, 1000);
+//		if(timestamp <= 0) {
+//			examing.examTimeOut(int);
+//		}
 	},
 	
 	/**
@@ -414,7 +420,7 @@ var examing = {
 		var minutes = parseInt(time[1]);
 		var seconds = parseInt(time[2]);
 		data.duration = hours * 3600 + minutes * 60 + seconds;
-		$("#question-submit input").attr("disabled", "");
+		$("#a-popup").addClass("ui-state-disabled");
 		var request = $.ajax({
 			headers : {
 				'Accept' : 'application/json',
@@ -436,13 +442,13 @@ var examing = {
 				});
 			} else {
 				util.error(message.result);
-				$("#question-submit input").removeAttr("disabled");
+				$("#a-popup").removeClass("ui-state-disabled");
 			}
 			modal.hideProgress();
 		});
 		request.fail(function(jqXHR, textStatus) {
 			alert("系统繁忙请稍后尝试");
-			$("#question-submit input").removeAttr("disabled");
+			$("#a-popup").removeClass("ui-state-disabled");
 			modal.hideProgress();
 		});
 	},

@@ -32,9 +32,11 @@ import com.extr.domain.exam.ExamPaper;
 import com.extr.domain.question.Field;
 import com.extr.domain.question.Question;
 import com.extr.domain.question.QuestionStruts;
+import com.extr.domain.user.User;
 import com.extr.security.UserInfo;
 import com.extr.service.ExamService;
 import com.extr.service.QuestionService;
+import com.extr.service.UserService;
 import com.extr.util.Page;
 import com.extr.util.PagingUtil;
 import com.extr.util.QuestionAdapter;
@@ -46,10 +48,15 @@ public class MobileController {
 	@Autowired
 	private ExamService examService;
 	@Autowired
+	private UserService userService;
+	@Autowired
 	private QuestionService questionService;
 
-	private static final String SUCCESS_Message = "success";
-	private static final String failed_Message = "failed";
+	private static final String SUCCESS_MESSAGE = "success";
+	private static final String FAILED_MESSAGE = "failed";
+	private static final int SECONDS_PER_MINUTE = 60;
+	private static final String PAPER_SUBMITTED = "ps";
+	private static final int MOBILE_PAPER_TYPE = 4;
 
 	public class ReportResult {
 		public int sum;
@@ -74,11 +81,14 @@ public class MobileController {
 	public String mobileExampaperListFilterPage(Model model,
 			@PathVariable("papertype") String papertype,
 			@PathVariable("page") int page) {
-
+		UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext()
+				.getAuthentication().getPrincipal();
 		Page<ExamPaper> pageModel = new Page<ExamPaper>();
 		pageModel.setPageNo(page);
 		pageModel.setPageSize(10);
-		List<ExamPaper> paper = examService.getExamPaperList4Exam(4);
+		List<ExamPaper> paper = examService.getExamPaperList4Exam(MOBILE_PAPER_TYPE);
+		User user = userService.getUserById(userInfo.getUserid());
+		model.addAttribute("truename", user.getTruename());
 		String pageStr = PagingUtil.getPageBtnlink(page,
 				pageModel.getTotalPage());
 		model.addAttribute("papertype", papertype);
@@ -105,13 +115,22 @@ public class MobileController {
 				+ ":" + request.getServerPort() + "/";
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		int duration = 0;
+		long startTime = 0L;
+		long nowTime = 0L;
+		int secondsPassed = 0;
+		int secondsLeft = 0;
 		ExamHistory examHistory = examService
 				.getUserExamHistoryByUserIdAndExamPaperId(userInfo.getUserid(),
 						examPaperId);
 		ExamPaper examPaper = examService.getExamPaperById(examPaperId);
+		User user = userService.getUserById(userInfo.getUserid());
+		model.addAttribute("truename", user.getTruename());
 		String content = "";
 		if (examHistory != null) {
 			content = examHistory.getContent();
+			if(examHistory.getSubmitTime() != null) {
+				//return "redirect:/mobile/exampaperfilter-"+PAPER_SUBMITTED+"-1.html";
+			}
 			
 			/*duration = examHistory.getDuration();
 			Date now = new Date();
@@ -139,9 +158,18 @@ public class MobileController {
 			examHistory.setUserId(userInfo.getUserid());
 			examHistory.setDuration(examPaper.getDuration());
 			examService.addUserExamHistory(examHistory);
+			examHistory = examService
+					.getUserExamHistoryByUserIdAndExamPaperId(userInfo.getUserid(),
+							examPaperId);
 			
 		}
+		
 		duration = examPaper.getDuration();
+		startTime = examHistory.getCreateTime().getTime();
+		nowTime = new Date().getTime();
+		secondsPassed = (int) ((nowTime - startTime) / 1000);
+		secondsLeft = duration * SECONDS_PER_MINUTE -  secondsPassed;
+		
 		@SuppressWarnings("unchecked")
 		List<QuestionQueryResult> questionList = Object2Xml.toBean(content,
 				List.class);
@@ -154,7 +182,8 @@ public class MobileController {
 
 		model.addAttribute("examHistoryId", examHistory.getHistId());
 		model.addAttribute("examPaperId", examPaperId);
-		model.addAttribute("duration", duration * 60);
+		model.addAttribute("duration", duration * SECONDS_PER_MINUTE);
+		model.addAttribute("secondsLeft", secondsLeft);
 		model.addAttribute("htmlStr", sb.toString());
 		return "mobile/examing";
 	}
@@ -165,6 +194,7 @@ public class MobileController {
 	Message mobileFinishExam(@RequestBody ExamFinishParam efp) {
 
 		Message message = new Message();
+		//message.setResult("error");
 		try {
 			ExamHistory examHistory = examService
 					.getUserExamHistoryByHistId(efp.getExam_history_id());
@@ -201,6 +231,8 @@ public class MobileController {
 		HashMap<Integer, AnswerSheetItem> hm = Object2Xml.toBean(
 				examHistory.getAnswerSheet(), HashMap.class);
 		ExamPaper examPaper = examService.getExamPaperById(examHistory.getExamPaperId());
+		User user = userService.getUserById(userInfo.getUserid());
+		model.addAttribute("truename", user.getTruename());
 
 		int total = hm.size();
 		int wrong = 0;
