@@ -23,6 +23,7 @@ import com.extr.domain.user.User;
 import com.extr.security.UserDetailsServiceImpl;
 import com.extr.security.UserInfo;
 import com.extr.service.UserService;
+import com.extr.util.MyMd5PasswordEncoder;
 import com.extr.util.StandardPasswordEncoderForSha1;
 
 /**
@@ -52,9 +53,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 		String password = this.obtainPassword(request);
 		
 		//加盐
-		String sh1Password = password + "{" + username + "}";
-		PasswordEncoder passwordEncoder = new StandardPasswordEncoderForSha1();
-		String result = passwordEncoder.encode(sh1Password);
+//		String sh1Password = password + "{" + username + "}";
+//		PasswordEncoder passwordEncoder = new StandardPasswordEncoderForSha1();
+//		String result = passwordEncoder.encode(sh1Password);
+		PasswordEncoder passwordEncoder = new MyMd5PasswordEncoder();
+		String result = passwordEncoder.encode(password);
 		UserInfo userDetails = (UserInfo) userDetailsService.loadUserByUsername(username);
 		/*System.out.println(userDetails.getAuthorities().toString());
 		System.out.println("username="+username+"  password=" + password + "  password_para=" + userDetails.getPassword());

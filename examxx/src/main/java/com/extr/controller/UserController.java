@@ -23,6 +23,7 @@ import com.extr.domain.user.User;
 import com.extr.security.UserInfo;
 import com.extr.service.QuestionService;
 import com.extr.service.UserService;
+import com.extr.util.MyMd5PasswordEncoder;
 import com.extr.util.Page;
 import com.extr.util.PagingUtil;
 import com.extr.util.StandardPasswordEncoderForSha1;
@@ -241,8 +242,12 @@ public class UserController {
 	@RequestMapping(value = { "/admin/add-user" }, method = RequestMethod.POST)
 	public @ResponseBody Message addUser(@RequestBody User user){
 		user.setCreate_date(new Date());
-		String password = user.getPassword() + "{" + user.getUsername() + "}";
-		PasswordEncoder passwordEncoder = new StandardPasswordEncoderForSha1();
+		
+//		String password = user.getPassword() + "{" + user.getUsername() + "}";
+//		PasswordEncoder passwordEncoder = new StandardPasswordEncoderForSha1();
+		String password = user.getPassword();
+		PasswordEncoder passwordEncoder = new MyMd5PasswordEncoder();
+		
 		String resultPassword = passwordEncoder.encode(password);
 		user.setPassword(resultPassword);
 		user.setEnabled("1");
