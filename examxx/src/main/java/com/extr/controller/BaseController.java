@@ -99,11 +99,11 @@ public class BaseController {
 
 		if (SecurityContextHolder.getContext().getAuthentication() == null){
 			this.appendBaseInfo(model);
-			return "home";
+			return "login";
 		}
 		if (SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString().endsWith("anonymousUser")){
 			this.appendBaseInfo(model);
-			return "home";
+			return "login";
 		}
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Collection<? extends GrantedAuthority> grantedAuthorities = userDetails.getAuthorities();
@@ -119,7 +119,7 @@ public class BaseController {
 		}  else if (grantedAuthorities.contains(new GrantedAuthorityImpl("ROLE_MOBILE"))) {
 			return "redirect:mobile/home";
 		}  else {
-			return "home";
+			return "login";
 		}
 	}
 	

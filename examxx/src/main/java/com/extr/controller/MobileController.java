@@ -2,6 +2,7 @@ package com.extr.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -128,10 +129,10 @@ public class MobileController {
 		String content = "";
 		if (examHistory != null) {
 			content = examHistory.getContent();
-			if(examHistory.getSubmitTime() != null) {
-				//return "redirect:/mobile/exampaperfilter-"+PAPER_SUBMITTED+"-1.html";
-			}
-			
+//			if(examHistory.getSubmitTime() != null) {
+//				return "redirect:/mobile/exampaperfilter-"+PAPER_SUBMITTED+"-1.html";
+//			}
+//			
 			/*duration = examHistory.getDuration();
 			Date now = new Date();
 			
@@ -173,6 +174,7 @@ public class MobileController {
 		@SuppressWarnings("unchecked")
 		List<QuestionQueryResult> questionList = Object2Xml.toBean(content,
 				List.class);
+		Collections.shuffle(questionList);
 
 		StringBuilder sb = new StringBuilder();
 		for (QuestionQueryResult question : questionList) {

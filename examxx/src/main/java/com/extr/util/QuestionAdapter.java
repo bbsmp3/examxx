@@ -1,7 +1,10 @@
 package com.extr.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 import com.extr.controller.domain.AnswerSheetItem;
 import com.extr.controller.domain.QuestionQueryResult;
@@ -16,8 +19,11 @@ public class QuestionAdapter {
 	private AnswerSheetItem answerSheetItem;
 	private QuestionQueryResult questionQueryResult;
 	private String baseUrl;
-	
+	private enum Choices{
+		A,B,C,D,E,F,G
+	};
 	private static final int SHORT_TITLE_LENGTH = 30;
+	
 
 	public String pointStrFormat(float point){
 		
@@ -1404,20 +1410,22 @@ public class QuestionAdapter {
 							.append(questionContent.getTitleImg())
 							.append("\" />");
 			sb.append("</p>");
-			Iterator<String> it1 = questionContent.getChoiceList().keySet()
-					.iterator();
+			Set<String> keySet1 = questionContent.getChoiceList().keySet();
+			ArrayList<String> keyList1 = new ArrayList<String>(keySet1);
+			Collections.shuffle(keyList1);
 			//sb.append("<ul data-role=\"listview\" data-theme=\"a\" data-divider-theme=\"b\">");
 			sb.append("<fieldset data-role=\"controlgroup\">");
-			while (it1.hasNext()) {
+			
+			for (int i = 0; i < keyList1.size(); i++) {
 				//sb.append("<li class=\"question-list-item\">");
-				String key = it1.next();
+				String key = keyList1.get(i);
 				String value = questionContent.getChoiceList().get(key);
 				sb.append("<input type=\"radio\" value=\"")
 						.append(key)
 						.append("\" name=\"question-radio1\" class=\"question-input\"")
 						.append(" id=\"question-radio-"+questionQueryResult.getQuestionId()+key+"\" >");
 				sb.append("<label for=\"question-radio-"+questionQueryResult.getQuestionId()+key+"\" >")
-						.append(key).append(": ").append(value)
+						.append(Choices.values()[i]).append(": ").append(value)
 						.append("</label>");
 				if (questionContent.getChoiceImgList() != null)
 					if (questionContent.getChoiceImgList().containsKey(key))
@@ -1456,20 +1464,21 @@ public class QuestionAdapter {
 							.append(questionContent.getTitleImg())
 							.append("\" />");
 			sb.append("</p>");
-			Iterator<String> it2 = questionContent.getChoiceList().keySet()
-					.iterator();
+			Set<String> keySet2 = questionContent.getChoiceList().keySet();
+			ArrayList<String> keyList2 = new ArrayList<String>(keySet2);
+			Collections.shuffle(keyList2);
 			//sb.append("<ul data-role=\"listview\" data-theme=\"a\" data-divider-theme=\"b\">");
 			sb.append("<fieldset data-role=\"controlgroup\">");
-			while (it2.hasNext()) {
+			for (int i = 0; i < keyList2.size(); i++) {
 				//sb.append("<li class=\"question-list-item\">");
-				String key = it2.next();
+				String key = keyList2.get(i);
 				String value = questionContent.getChoiceList().get(key);
 				sb.append("<input type=\"checkbox\" value=\"")
 						.append(key)
 						.append("\" name=\"question-radio1\" class=\"question-input\"")
 						.append(" id=\"question-radio-"+questionQueryResult.getQuestionId()+key+"\" >");
 				sb.append("<label for=\"question-radio-"+questionQueryResult.getQuestionId()+key+"\" >")
-				.append(key).append(": ").append(value)
+				.append(Choices.values()[i]).append(": ").append(value)
 				.append("</label>");
 				if (questionContent.getChoiceImgList() != null)
 					if (questionContent.getChoiceImgList().containsKey(key))
@@ -1511,13 +1520,13 @@ public class QuestionAdapter {
 			//sb.append("<ul data-role=\"listview\" data-theme=\"a\" data-divider-theme=\"b\">");
 			sb.append("<fieldset data-role=\"controlgroup\">");
 			sb.append("<input type=\"radio\" value=\"T\"")
-				.append(" class=\"question-input\"")
+				.append(" name=\"question-radio1\" class=\"question-input\"")
 				.append(" id=\"question-radio-"+questionQueryResult.getQuestionId()+"t\" >");
 			sb.append("<label for=\"question-radio-"+questionQueryResult.getQuestionId()+"t\" >")
 				.append("正确")
 				.append("</label>");
 			sb.append("<input type=\"radio\" value=\"F\"")
-				.append(" class=\"question-input\"")
+				.append(" name=\"question-radio1\"class=\"question-input\"")
 				.append(" id=\"question-radio-"+questionQueryResult.getQuestionId()+"f\" >");
 			sb.append("<label for=\"question-radio-"+questionQueryResult.getQuestionId()+"f\" >")
 				.append("错误")

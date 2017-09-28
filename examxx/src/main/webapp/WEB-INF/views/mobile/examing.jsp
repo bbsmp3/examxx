@@ -30,14 +30,36 @@ String basePath = request.getScheme() + "://"
 
 	<div data-role="page" class="ui-page-theme-b">
 
-		<div data-role="header" >
+		<div data-role="header" data-position="fixed">
 			<a href="#" class="ui-btn ui-btn-left ui-icon-user ui-btn-icon-left">${truename}</a> 
 			<a href="j_spring_security_logout" class="ui-btn ui-btn-right ui-icon-action ui-btn-icon-right">退出</a> 
 			<h1>企金考试系统</h1>
+			<div data-role="navbar">
+					<ul>
+						<li><a href="#" class="ui-btn type-selector" value="qt-singlechoice">单选(
+							<span id="singlechoice-count">0</span>
+							/
+							<span id="singlechoice-sum">0</span>
+						)</a></li>
+						<li><a href="#" class="ui-btn type-selector" value="qt-multiplechoice">多选(
+							<span id="multiplechoice-count">0</span>
+							/
+							<span id="multiplechoice-sum">0</span>
+						)</a></li>
+						<li><a href="#" class="ui-btn type-selector" value="qt-trueorfalse">判断(
+							<span id="trueorfalse-count">0</span>
+							/
+							<span id="trueorfalse-sum">0</span>
+						)</a></li>
+					</ul>
+				</div><!-- /navbar -->
 		</div>
 		<input type="hidden" id="hist-id" value="${examHistoryId }"> 
 		<input type="hidden" id="paper-id" value="${examPaperId }">
-		<div id="exampaper-body" data-role="collapsibleset" data-theme="c">
+		<div id="exampaper-body" data-role="collapsibleset" >
+		
+<!-- 		<div class="question qt-singlechoice ui-body-e"  data-role="collapsible" id="test"><h4><span class="question-no"></span>“专业尽职调查”，是指分行尽职调查中心的尽职调查人员会同客户</h4><div class="question-title"><div class="question-title-icon"></div><span class="question-no"></span><span class="question-type" style="display: none;">singlechoice</span><span class="knowledge-point-id" style="display: none;">6</span><span class="question-type-id" style="display: none;">1</span><span>[单选题]</span><span class="question-point-content"><span>(</span><span class="question-point">2</span><span>分)</span></span><span class="question-id" style="display:none;">271</span></div><form class="question-body"><p class="question-body-text">“专业尽职调查”，是指分行尽职调查中心的尽职调查人员会同客户经理，根据尽职调查真实性核查等相关要求，对         的真实性、完整性等有关情况进行核查，发表独立的验证和评价意见，为授信决策提供参考的行为。(  )</p> -->
+<!-- 		<fieldset data-role="controlgroup"><input type="radio" value="A" name="question-radio1" class="question-input" id="question-radio-271A" ><label for="question-radio-271A" >A: 影响还款关键风险点</label></span><input type="radio" value="B" name="question-radio1" class="question-input" id="question-radio-271B" ><label for="question-radio-271B" >B: 重要财务科目</label></span><input type="radio" value="C" name="question-radio1" class="question-input" id="question-radio-271C" ><label for="question-radio-271C" >C: 授信基础资料</label></span><input type="radio" value="D" name="question-radio1" class="question-input" id="question-radio-271D" ><label for="question-radio-271D" >D: 影响贷款用途的关键风险点</label></span></fieldset></form></div> -->
 			${htmlStr }</div>
 		<a href="#popupDialog" data-rel="popup" id="a-popup"
 			data-position-to="window" data-transition="pop"
@@ -49,7 +71,7 @@ String basePath = request.getScheme() + "://"
 				<h1>确认提交？</h1>
 			</div>
 			<div role="main" class="ui-content">
-				<h3 class="ui-title">是否结束考试？确认提交后将无法再次答题</h3>
+				<h3 class="ui-title">您还有<span id="final-count">0</span>道题没有完成,是否结束考试？确认提交后将无法再次答题</h3>
 				<a href="#" id="a-submit"
 					class="ui-btn ui-corner-all ui-shadow ui-btn-inline"
 					data-transition="flow">确认</a>

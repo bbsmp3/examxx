@@ -9,9 +9,16 @@ $(document).on("mobileinit", function () {
 });
 
 $(document).on("pagecreate",function(){
+	$(".question").addClass("ui-body-c");
+	$(".question").attr("counted","false");
 	examing.addNumber(); 
-	examing.bindSubmit();
+	examing.initNavBar();
+	examing.doQuestionFilt("qt-singlechoice");
+	examing.bindQuestionFilter();
+	examing.bindFinishOne();
 	examing.startTimer();
+	examing.bindSubmit();
+	//alert($(".question").attr("data-theme"));
 });
 
 
@@ -21,7 +28,7 @@ var examing = {
 		
 		this.refreshNavi();
 		this.bindNaviBehavior();
-//		this.addNumber();
+		this.addNumber();
 //		this.securityHandler();
 
 		this.bindOptClick();
@@ -31,8 +38,21 @@ var examing = {
 		this.bindFinishOne();
 		this.startTimer();
 
+		this.bindSubmit();
+
 		
 	},
+	
+	singleChoiceCount : 0,
+	multipleChoiceCount : 0,
+	trueOrFalseCount : 0,
+	
+	initNavBar : function initNavBar() {
+		$("#singlechoice-sum").text($(".qt-singlechoice").length);
+		$("#multiplechoice-sum").text($(".qt-multiplechoice").length);
+		$("#trueorfalse-sum").text($(".qt-trueorfalse").length);
+	},
+	
 	
 	fixSideBar : function fixSideBar() {
 		var nav = $("#bk-exam-control");
@@ -234,34 +254,36 @@ var examing = {
 	/**
 	 * 完成一道题触发的function
 	 */
-	bindFinishOne : function bindFinishOne() {
-		$(".question input[type=radio]").change(function() {
-			var current_index = $("li.question").index($(this).parent().parent());
-			$($("a.question-navi-item")[current_index]).addClass("pressed");
-		});
+//	bindFinishOne : function bindFinishOne() {
+//		$(".question input[type=radio]").change(function() {
+//			var current_index = $("li.question").index($(this).parent().parent());
+//			$($("a.question-navi-item")[current_index]).addClass("pressed");
+//		});
+//
+//		$(".question input[type=checkbox]").change(function() {
+//			var current_question = $(this).parent().parent();
+//			var current_index = $("li.question").index(current_question);
+//			var checkedboxs = current_question.find("input[type=checkbox]:checked");
+//			if (checkedboxs.length > 0) {
+//				$($("a.question-navi-item")[current_index]).addClass("pressed");
+//			} else {
+//				$($("a.question-navi-item")[current_index]).removeClass("pressed");
+//			}
+//		});
+//
+//		$(".question textarea").bind('input propertychange', function() {
+//
+//			var current_index = $("li.question").index($(this).parent().parent());
+//			if ($(this).val() != "") {
+//				$($("a.question-navi-item")[current_index]).addClass("pressed");
+//			} else {
+//				$($("a.question-navi-item")[current_index]).removeClass("pressed");
+//			}
+//		});
+//
+//	},
+	
 
-		$(".question input[type=checkbox]").change(function() {
-			var current_question = $(this).parent().parent();
-			var current_index = $("li.question").index(current_question);
-			var checkedboxs = current_question.find("input[type=checkbox]:checked");
-			if (checkedboxs.length > 0) {
-				$($("a.question-navi-item")[current_index]).addClass("pressed");
-			} else {
-				$($("a.question-navi-item")[current_index]).removeClass("pressed");
-			}
-		});
-
-		$(".question textarea").bind('input propertychange', function() {
-
-			var current_index = $("li.question").index($(this).parent().parent());
-			if ($(this).val() != "") {
-				$($("a.question-navi-item")[current_index]).addClass("pressed");
-			} else {
-				$($("a.question-navi-item")[current_index]).removeClass("pressed");
-			}
-		});
-
-	},
 
 	/**
 	 * 开始倒计时
@@ -324,30 +346,50 @@ var examing = {
 	 * 完成一道题触发的function
 	 */
 	bindFinishOne : function bindFinishOne() {
-		$(".question input[type=radio]").change(function() {
-			var current_index = $("li.question").index($(this).parent().parent());
-			$($("a.question-navi-item")[current_index]).addClass("pressed");
-		});
-
-		$(".question input[type=checkbox]").change(function() {
-			var current_question = $(this).parent().parent();
-			var current_index = $("li.question").index(current_question);
-			var checkedboxs = current_question.find("input[type=checkbox]:checked");
-			if (checkedboxs.length > 0) {
-				$($("a.question-navi-item")[current_index]).addClass("pressed");
-			} else {
-				$($("a.question-navi-item")[current_index]).removeClass("pressed");
+		$(".qt-singlechoice input[type=radio]").on("change", function(event, ui) {
+			var question = $(this).closest(".question");
+			$(question).removeClass("ui-body-c");
+			$(question).addClass("ui-body-e");
+			if($(question).attr("counted") == "false") {
+				examing.singleChoiceCount++;
+				$("#singlechoice-count").text(examing.singleChoiceCount);
+				$(question).attr("counted", "true");
 			}
 		});
 
-		$(".question textarea").bind('input propertychange', function() {
 
-			var current_index = $("li.question").index($(this).parent().parent());
-			if ($(this).val() != "") {
-				$($("a.question-navi-item")[current_index]).addClass("pressed");
-			} else {
-				$($("a.question-navi-item")[current_index]).removeClass("pressed");
+		$(".qt-multiplechoice input[type=checkbox]").on("change", function(event, ui) {
+			var question = $(this).closest(".question");
+			var checkbox_checked = $(this).closest(".ui-controlgroup-controls").find("input[type=checkbox]:checked");
+			if($(question).attr("counted") == "false") {
+				$(question).removeClass("ui-body-c");
+				$(question).addClass("ui-body-e");
+				examing.multipleChoiceCount++;
+				$("#multiplechoice-count").text(examing.multipleChoiceCount);
+				$(question).attr("counted", "true");
 			}
+			if (checkbox_checked.length == 0 && $(question).attr("counted") == "true") {
+				$(question).removeClass("ui-body-e");
+				$(question).addClass("ui-body-c");
+				examing.multipleChoiceCount--;
+				$("#multiplechoice-count").text(examing.multipleChoiceCount);
+				$(question).attr("counted", "false");
+			} 
+		});
+		
+		$(".qt-multiplechoice").on("collapsiblecollapse", function(event, ui) {
+			
+		});
+		
+		$(".qt-trueorfalse input[type=radio]").on("change", function(event, ui) {
+			var question = $(this).closest(".question");
+			$(question).removeClass("ui-body-c");
+			$(question).addClass("ui-body-e");
+			if($(question).attr("counted") == "false") {
+				examing.trueOrFalseCount++;
+				$("#trueorfalse-count").text(examing.trueOrFalseCount);
+				$(question).attr("counted", "true");
+			}	
 		});
 
 	},
@@ -355,8 +397,15 @@ var examing = {
 	 * 对题目重新编号排序
 	 */
 	addNumber : function addNumber() {
-		var questions = $("div.question");
-
+		var questions = $("div.qt-singlechoice");
+		questions.each(function(index) {
+			$(this).find(".question-no").text(index + 1 + ".");
+		});
+		questions = $("div.qt-multiplechoice");
+		questions.each(function(index) {
+			$(this).find(".question-no").text(index + 1 + ".");
+		});
+		questions = $("div.qt-trueorfalse");
 		questions.each(function(index) {
 			$(this).find(".question-no").text(index + 1 + ".");
 		});
@@ -366,16 +415,11 @@ var examing = {
 	 * 切换考题类型事件
 	 */
 	bindQuestionFilter : function bindQuestionFilter() {
-		// $(".exampaper-filter-item").bi
-// 		
-		// $("span.efi-selected").find(".efi-qcode").text();
-		$("#exampaper-desc").delegate("span.exampaper-filter-item", "click", function() {
-			var qtype = $(this).find(".efi-qcode").text();
-			// var questions = $("li.question");
-			// questions.hide();
-			// $("#exampaper-body ." + qtype).show();
-			// $(".exampaper-filter-item").removeClass("efi-selected");
-			// $(this).addClass("efi-selected");
+
+		$(".type-selector").on("tap", function() {
+			var qtype = $(this).attr("value")
+//			this.removeClass("ui-btn-active");
+//			this.addClass("ui-btn-c");
 			examing.doQuestionFilt(qtype);
 		});
 	},
@@ -385,22 +429,18 @@ var examing = {
 	 *切换到指定的题型 
 	 */
 	doQuestionFilt : function doQuestionFilt(questiontype) {
-		
-		if($("#exampaper-desc .efi-" + questiontype).hasClass("efi-selected")){
-			return false;
-		}else{
-			var questions = $("li.question");
-			questions.hide();
-			$("#exampaper-body ." + questiontype).show();
-			
-			$(".exampaper-filter-item").removeClass("efi-selected");
-			$("#exampaper-desc .efi-" + questiontype).addClass("efi-selected");
-		}
-		
-		
+		var questions = $("div.question");
+		questions.hide();
+		$("#exampaper-body ." + questiontype).show();
 	},
 
 	bindSubmit : function bindSubmit() {
+		  $("#a-popup").on("tap",function(){
+			  var finalCount = $(".question").length - examing.singleChoiceCount
+			  	- examing.multipleChoiceCount - examing.trueOrFalseCount;
+			  $("#final-count").text(finalCount);
+		  });
+		  
 		  $("#a-submit").on("tap",function(){  
 			  examing.finishExam();
 		  }); 
@@ -467,22 +507,24 @@ var examing = {
 				if (radio_checked.length == 0) {
 					answerSheetItem.answer = "";
 				} else {
-					var current_index = $(radio_all).index(radio_checked);
-					answerSheetItem.answer = String.fromCharCode(65 + current_index);
+					answerSheetItem.answer = $(radio_checked).attr("value");
 				}
 				answerSheetItem.question_type_id = 1;
 			} else if ($(questions[i]).hasClass("qt-multiplechoice")) {
 
 				var checkbox_checked = $(questions[i]).find("input[type=checkbox]:checked");
 				var checkbox_all = $(questions[i]).find("input[type=checkbox]");
+				var checked_values = new Array();
+			
 				if (checkbox_checked.length == 0) {
 					answerSheetItem.answer = "";
 				} else {
 					var tm_answer = "";
 					for (var l = 0; l < checkbox_checked.length; l++) {
-						var current_index = $(checkbox_all).index($(checkbox_checked[l]));
-						tm_answer = tm_answer + String.fromCharCode(65 + current_index);
+						checked_values[l] = $(checkbox_checked[l]).attr("value");
 					}
+					checked_values.sort();
+					tm_answer = checked_values.join("");
 					answerSheetItem.answer = tm_answer;
 				}
 				answerSheetItem.question_type_id = 2;
