@@ -24,6 +24,12 @@ String basePath = request.getScheme() + "://"
 		$(document).bind("mobileinit", function () {
 		    $.mobile.ajaxEnabled = false;
 		});
+		
+		$(document).on("pagecreate",function(){
+			if($("#input-msg").val() == "error") {
+				$("#button-message").trigger("click");
+			}
+		});
 	</script>
 <script src="resources/jqm/js/jquery.mobile-1.4.5.min.js"></script>
 </head>
@@ -37,23 +43,28 @@ String basePath = request.getScheme() + "://"
 			<a href="j_spring_security_logout" class="ui-btn ui-btn-right ui-icon-action ui-btn-icon-right">退出</a> 
 			<h1>企金考试系统</h1>
 		</div>
-				<c:if test="${papertype == 'ps' }">
-		<div data-role="popup" id="popupDialogPs"
+<%-- 		<c:if test="${message.result == 'error' }"> --%>
+<%-- 			<div><span style="color:red;text-align:center;">${message.messageInfo }</span></div> --%>
+<%-- 		</c:if> --%>
+		<div data-role="controlgroup">
+			<input type="hidden" id="input-msg" value="${message.result}"> 
+			<a href="#popupDialogM" data-rel="popup" id="button-message"
+					data-position-to="window" data-transition="pop" style="display:none;"
+					class="ui-btn ui-corner-all ui-shadow  ui-icon-forward ui-btn-icon-left ui-btn-c"></a>
+			<div data-role="popup" id="popupDialogM"
 					data-overlay-theme="a" data-theme="b" data-dismissible="false"
 					style="max-width: 400px;">
 					<div data-role="header" data-theme="b">
-						<h1>试卷已提交</h1>
+						<h1>错误</h1>
 					</div>
 					<div role="main" class="ui-content" data-theme="b">
-						<h3 class="ui-title">试卷已提交，无法再次考试！</h3>
+						<h3 class="ui-title">${message.messageInfo }</h3>
 						<a href="#"
 							class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"
-							data-rel="back">知道了</a>
+							data-rel="back">好的</a>
 
 					</div>
 				</div>
-	</c:if>
-		<div data-role="controlgroup">
 			<c:forEach items="${paper }" var="item">
 				<a href="#popupDialog${item.id}" data-rel="popup"
 					data-position-to="window" data-transition="pop"
@@ -78,7 +89,12 @@ String basePath = request.getScheme() + "://"
 					</div>
 				</div>
 			</c:forEach>
+			
 		</div>
+		
+	
+
+			
 	
 		<div data-role="footer">
 			<h5>分行科技部 Copyright ©</h5>

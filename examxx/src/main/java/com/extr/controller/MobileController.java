@@ -16,11 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.extr.controller.ExamController.ReportResult;
 import com.extr.controller.domain.AnswerSheetItem;
@@ -81,7 +83,8 @@ public class MobileController {
 	@RequestMapping(value = "/mobile/exampaperfilter-{papertype}-{page}.html", method = RequestMethod.GET)
 	public String mobileExampaperListFilterPage(Model model,
 			@PathVariable("papertype") String papertype,
-			@PathVariable("page") int page) {
+			@PathVariable("page") int page,
+			@ModelAttribute("msg") Message message) {
 		UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext()
 				.getAuthentication().getPrincipal();
 		Page<ExamPaper> pageModel = new Page<ExamPaper>();
@@ -95,6 +98,7 @@ public class MobileController {
 		model.addAttribute("papertype", papertype);
 		model.addAttribute("paper", paper);
 		model.addAttribute("pageStr", pageStr);
+		model.addAttribute("message", message);
 		return "/mobile/home";
 	}
 
@@ -108,7 +112,7 @@ public class MobileController {
 	 */
 	@RequestMapping(value = "/mobile/examing/{examPaperId}", method = RequestMethod.GET)
 	public String mobileExaming(Model model, HttpServletRequest request,
-			@PathVariable("examPaperId") int examPaperId) {
+			@PathVariable("examPaperId") int examPaperId, RedirectAttributes redirectAttributes) {
 
 		UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext()
 				.getAuthentication().getPrincipal();
@@ -120,6 +124,7 @@ public class MobileController {
 		long nowTime = 0L;
 		int secondsPassed = 0;
 		int secondsLeft = 0;
+		Message message = new Message();
 		ExamHistory examHistory = examService
 				.getUserExamHistoryByUserIdAndExamPaperId(userInfo.getUserid(),
 						examPaperId);
@@ -132,7 +137,7 @@ public class MobileController {
 //			if(examHistory.getSubmitTime() != null) {
 //				return "redirect:/mobile/exampaperfilter-"+PAPER_SUBMITTED+"-1.html";
 //			}
-//			
+			
 			/*duration = examHistory.getDuration();
 			Date now = new Date();
 			
@@ -170,6 +175,12 @@ public class MobileController {
 		nowTime = new Date().getTime();
 		secondsPassed = (int) ((nowTime - startTime) / 1000);
 		secondsLeft = duration * SECONDS_PER_MINUTE -  secondsPassed;
+		if(secondsLeft <= 0) {
+			message.setResult("error");
+			message.setMessageInfo("答题时间已耗尽");
+			redirectAttributes.addFlashAttribute("msg", message);
+			return "redirect:/mobile/exampaperfilter-0-1.html";
+		}
 		
 		@SuppressWarnings("unchecked")
 		List<QuestionQueryResult> questionList = Object2Xml.toBean(content,
