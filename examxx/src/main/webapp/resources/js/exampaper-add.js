@@ -274,6 +274,16 @@ exampaper_add = {
 			knowledges.each(function(){
 				rateMap[$(this).val()] = 0;
 			});
+//			rateMap[12] = 0.73;
+//			rateMap[5] = 0.03;
+//			rateMap[6] = 0.03;
+//			rateMap[7] = 0.03;
+//			rateMap[8] = 0.03;
+//			rateMap[9] = 0.03;
+//			rateMap[10] = 0.03;
+//			rateMap[11] = 0.03;
+//			rateMap[13] = 0.03;
+//			rateMap[14] = 0.03;
 			
 			paperParam.questionKnowledgePointRate = rateMap;
 			
