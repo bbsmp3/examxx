@@ -299,6 +299,7 @@ public class QuestionServiceImpl implements QuestionService {
 				question.setKeyword(map.get("知识关键点"));
 				question.setPoints(map.get("分值").equals("") ? 0 : Float
 						.parseFloat(map.get("分值")));
+				question.setDifficulty(Float.valueOf(map.get("难度")));
 				QuestionContent qc = new QuestionContent();
 
 				Iterator<String> it = map.keySet().iterator();
