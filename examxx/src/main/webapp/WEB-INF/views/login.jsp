@@ -47,6 +47,7 @@ String basePath = request.getScheme() + "://"
               </div>  
             </form>  
 			<h5>说明: 用户名为四位工号, 密码为分行考核系统密码</h5> 	
+			<h5 style="color:red;">${result}</h5>
 					
     </div>  
 

@@ -4,10 +4,13 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,9 +48,11 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = { "/user-login-page" }, method = RequestMethod.GET)
-	public String loginPage(Model model, @RequestParam(value = "result", required = false, defaultValue = "") String result) {
+	public String loginPage(Model model, @RequestParam(value = "result", required = false, defaultValue = "") String result, HttpSession session) {
 		if("failed".equals(result)){
-			model.addAttribute("result", "无效的用户名或者密码");
+			AuthenticationException exception = (AuthenticationException)session.getAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
+			String message = exception!=null ? exception.getMessage() : "";
+			model.addAttribute("result", message);
 		}
 		return "login";
 	}

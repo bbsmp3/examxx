@@ -154,14 +154,15 @@ public class ExamPaperController {
 		examPaper.setCreator(userInfo.getUsername());
 		examPaper.setTotal_point(param.getPaperPoint());
 		
-		HashMap<Integer, Float> knowledgeMap1 = new HashMap<Integer, Float>();
-		knowledgeMap1.put(12, (float) 0.70);
-		knowledgeMap1.put(7, (float) 0.06);
-		knowledgeMap1.put(8, (float) 0.06);
-		knowledgeMap1.put(9, (float) 0.06);
-		knowledgeMap1.put(10, (float) 0.06);
-		knowledgeMap1.put(11, 1 - knowledgeMap1.get(12) - knowledgeMap1.get(7) - knowledgeMap1.get(8) - knowledgeMap1.get(9) - knowledgeMap1.get(10)  );
-		param.setQuestionKnowledgePointRate(knowledgeMap1);
+		//按比例出题
+//		HashMap<Integer, Float> knowledgeMap1 = new HashMap<Integer, Float>();
+//		knowledgeMap1.put(12, (float) 0.70);
+//		knowledgeMap1.put(7, (float) 0.06);
+//		knowledgeMap1.put(8, (float) 0.06);
+//		knowledgeMap1.put(9, (float) 0.06);
+//		knowledgeMap1.put(10, (float) 0.06);
+//		knowledgeMap1.put(11, 1 - knowledgeMap1.get(12) - knowledgeMap1.get(7) - knowledgeMap1.get(8) - knowledgeMap1.get(9) - knowledgeMap1.get(10)  );
+//		param.setQuestionKnowledgePointRate(knowledgeMap1);
 		
 		//手工组卷
 		if(param.getQuestionKnowledgePointRate().size() == 0){
