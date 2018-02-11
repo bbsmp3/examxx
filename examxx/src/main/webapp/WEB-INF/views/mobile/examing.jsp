@@ -13,7 +13,7 @@ String basePath = request.getScheme() + "://"
 <base href="<%=basePath%>">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>企金考试系统</title>
+<title>分行考试系统</title>
 <link rel="stylesheet" href="resources/jqm/css/themes/default/jquery.mobile-1.4.5.min.css">
 <link rel="stylesheet" href="resources/jqm/_assets/css/jqm-demos.css">
 <link rel="stylesheet" href="resources/jqm/css/themes/theme-classic.css">
@@ -33,7 +33,7 @@ String basePath = request.getScheme() + "://"
 		<div data-role="header" data-position="fixed">
 			<a href="#" class="ui-btn ui-btn-left ui-icon-user ui-btn-icon-left">${truename}</a> 
 			<a href="j_spring_security_logout" class="ui-btn ui-btn-right ui-icon-action ui-btn-icon-right">退出</a> 
-			<h1>企金考试系统</h1>
+			<h1>分行考试系统</h1>
 			<div data-role="navbar">
 					<ul>
 						<li><a href="#" class="ui-btn type-selector" value="qt-singlechoice">单选(
