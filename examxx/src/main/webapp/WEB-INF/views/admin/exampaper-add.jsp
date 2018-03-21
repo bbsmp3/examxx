@@ -128,6 +128,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="form-line add-update-exampaper-creat-type">
 									<span class="form-label"><span class="warning-label">*</span>组卷方式：</span>
 									<select class="df-input-narrow">
+									    <option value="3">标签组卷</option>
 										<option value="2">自动组卷</option>
 										<option value="1">手动组卷</option>
 										
@@ -240,6 +241,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<input id="total-point" type="text" class="df-input-narrow" disabled="disbaled">
 									<span class="form-message"></span>
 								</div>
+								<div class="form-line add-paper-tag" style="display: block;">
+                                    <span class="form-label"><span class="warning-label">*</span>标签：</span>
+                                    <input id="paper-tag" type="text" class="df-input-narrow">
+                                    <span class="form-message"></span>
+                                </div>
 								<div class="form-line add-update-exampaper-scope" style="display: block;">
 									<span class="form-label"><span class="warning-label">*</span>知识点：</span>
 									<fieldset>

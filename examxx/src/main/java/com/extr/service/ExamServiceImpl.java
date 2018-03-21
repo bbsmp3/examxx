@@ -95,6 +95,46 @@ public class ExamServiceImpl implements ExamService {
 		}
 
 	}
+	
+
+	@Override
+	@Transactional
+	public void createExamPaperByPaperTag(
+			HashMap<Integer, Integer> questionTypeNum,
+			HashMap<Integer, Float> questionTypePoint,
+			String paperTag,
+			ExamPaper examPaper) {
+		// TODO Auto-generated method stub
+
+		try {
+			List<QuestionQueryResult> questionList = questionMapper
+					.getQuestionAnalysisListByPaperTag(paperTag);
+			
+			//检验抽取试卷的题型map是否与输入题型map一样
+			HashMap<Integer, Integer> paperTypeNum =  new HashMap<Integer, Integer>();
+			for(QuestionQueryResult qqr : questionList){
+				if(paperTypeNum.containsKey(qqr.getQuestionTypeId())) {
+					Integer old = paperTypeNum.get(qqr.getQuestionTypeId());
+					paperTypeNum.put(qqr.getQuestionTypeId(), old+1);
+				} else {
+					paperTypeNum.put(qqr.getQuestionTypeId(), 1);
+				}
+			}
+			if(!paperTypeNum.equals(questionTypeNum)) {
+				throw new RuntimeException("抽取试卷的题型map与输入题型的map不一致");
+			}
+			
+			for(QuestionQueryResult qqr : questionList){
+				qqr.setQuestionPoint(questionTypePoint.get(qqr.getQuestionTypeId()));
+			}
+			examPaper.setContent(Object2Xml.toXml(questionList));
+			examPaperMapper.insertExamPaper(examPaper);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e.getMessage());
+		}
+
+	}
 
 	@Override
 	public List<ExamPaper> getExamPaperListByPaperType(String paperType,

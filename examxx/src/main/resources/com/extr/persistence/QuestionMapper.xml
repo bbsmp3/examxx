@@ -80,6 +80,35 @@
 		order by a.question_type_id,a.id
 	</select>
 	
+	<select id="getQuestionAnalysisListByPaperTag"
+        resultType="com.extr.controller.domain.QuestionQueryResult">
+        SELECT a.id
+        questionId,a.content,a.answer,a.analysis,a.question_type_id
+        questionTypeId,a.reference
+        referenceName,a.examing_point
+        examingPoint,b.point_id knowledgePointId,GROUP_CONCAT(d.field_name,' &gt; ',c.point_name,' &gt; ',
+        case when a.keyword is null then '' else
+        CONCAT('
+        知识关键点：',a.keyword) end)
+        pointName,GROUP_CONCAT(d.field_name)
+        fieldName
+        from et_question
+        a,et_question_2_point
+        b,et_knowledge_point
+        c,et_field d
+        <where>
+            a.id=b.question_id and
+            b.point_id=c.point_id and
+            c.field_id=d.field_id
+            and
+            a.keyword=#{paperTag}
+        </where>
+        group by
+        a.id,a.content,a.answer,a.analysis,a.question_type_id,a.reference,
+        a.examing_point,b.point_id
+        order by a.question_type_id,a.id
+    </select>
+	
 	<select id="getQuestionAnalysisListByPointIdAndTypeId"
 		resultType="com.extr.controller.domain.QuestionQueryResult">
 		SELECT a.id

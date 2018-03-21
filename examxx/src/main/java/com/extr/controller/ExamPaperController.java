@@ -165,7 +165,7 @@ public class ExamPaperController {
 //		param.setQuestionKnowledgePointRate(knowledgeMap1);
 		
 		//手工组卷
-		if(param.getQuestionKnowledgePointRate().size() == 0){
+		if(param.getQuestionKnowledgePointRate().size() == 0 && param.getQuestionTypeNum() == null){
 			try{
 				examService.insertExamPaper(examPaper);
 			}catch(Exception ex){
@@ -174,6 +174,22 @@ public class ExamPaperController {
 			message.setGeneratedId(examPaper.getId());
 			return message;
 		}
+		
+		//标签组卷
+		if(param.getQuestionKnowledgePointRate().size() == 0 && param.getQuestionTypeNum() != null){
+			try{
+				examService.createExamPaperByPaperTag(param.getQuestionTypeNum(),
+						param.getQuestionTypePoint(),
+						param.getPaperTag(),
+						examPaper);
+				message.setGeneratedId(examPaper.getId());
+			}catch(Exception e){
+				e.printStackTrace();
+				message.setResult(e.getMessage());
+			}		
+			return message;
+		}
+		
 		List<Integer> idList = new ArrayList<Integer>();
 
 		HashMap<Integer, Float> knowledgeMap = param
@@ -182,7 +198,8 @@ public class ExamPaperController {
 		while(it.hasNext()){
 			idList.add(it.next());
 		}
-
+		
+		//依照知识点，获取题库中所有符合条件的题目，用于随机选题
 		HashMap<Integer, HashMap<Integer, List<QuestionStruts>>> questionMap = questionService
 				.getQuestionStrutsMap(idList);
 		

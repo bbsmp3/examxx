@@ -8,6 +8,7 @@ exampaper_add = {
 			this.bindChangeAmount();
 			this.bindChangeCreatExamPaperType();
 			this.bindSubmit();
+			$(".add-update-exampaper-scope").hide();
 		},
 		bindSubmit : function bindSubmit() {
 			$("#form-exampaper-add").submit(function() {
@@ -127,10 +128,17 @@ exampaper_add = {
 					$(".add-update-types").hide();
 					$(".add-update-exampaper-scope").hide();
 					$(".add-total-point").hide();
-				} else {
+					$(".add-paper-tag").hide();
+				} else if(2 == $(this).val()){
 					$(".add-update-types").show();
 					$(".add-update-exampaper-scope").show();
 					$(".add-total-point").show();
+					$(".add-paper-tag").hide();
+				} else{
+					$(".add-update-types").show();
+					$(".add-update-exampaper-scope").hide();
+					$(".add-total-point").show();					
+					$(".add-paper-tag").show();
 				}
 				
 			});
@@ -244,6 +252,7 @@ exampaper_add = {
 			paperParam.time = $(".add-update-duration input").val();
 			paperParam.paperPoint = $("#total-point").val();
 			paperParam.paperType = $(".add-update-exampaper-type select").val();
+			paperParam.paperTag = $(".add-paper-tag input").val();
 			
 			var qt = $(".add-ques-type");
 			var amountMap = new Object();
@@ -259,7 +268,7 @@ exampaper_add = {
 					pointMap[itemsid] = itemscore;
 				}
 			}
-			if($(".add-update-exampaper-creat-type select").val() == 2){
+			if($(".add-update-exampaper-creat-type select").val() >= 2){
 				paperParam.questionTypeNum = amountMap;
 				paperParam.questionTypePoint = pointMap;
 				paperParam.paperPoint = $("#total-point").val();

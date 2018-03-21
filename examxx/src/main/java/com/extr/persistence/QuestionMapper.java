@@ -31,6 +31,9 @@ public interface QuestionMapper {
 
 	List<QuestionQueryResult> getQuestionAnalysisListByIdList(
 			@Param("array") List<Integer> idList);
+	
+	List<QuestionQueryResult> getQuestionAnalysisListByPaperTag(
+			@Param("paperTag") String paperTag);
 
 	List<QuestionQueryResult> getQuestionAnalysisListByPointIdAndTypeId(
 			@Param("typeId") int typeId, @Param("pointId") int pointId);

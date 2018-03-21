@@ -38,6 +38,8 @@ public class PaperCreatorParam {
 	 */
 	private float paperPoint;
 	private String paperType;
+	private String paperTag;
+	
 	public String getPaperType() {
 		return paperType;
 	}
@@ -92,5 +94,11 @@ public class PaperCreatorParam {
 	}
 	public void setTime(int time) {
 		this.time = time;
+	}
+	public String getPaperTag() {
+		return paperTag;
+	}
+	public void setPaperTag(String paperTag) {
+		this.paperTag = paperTag;
 	}
 }

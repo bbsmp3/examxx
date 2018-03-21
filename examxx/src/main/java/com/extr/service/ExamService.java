@@ -25,6 +25,12 @@ public interface ExamService {
 			HashMap<Integer, Integer> questionTypeNum,
 			HashMap<Integer, Float> questionTypePoint,
 			HashMap<Integer, Float> knowledgePointRate, ExamPaper examPaper);
+	
+	public void createExamPaperByPaperTag(
+			HashMap<Integer, Integer> questionTypeNum,
+			HashMap<Integer, Float> questionTypePoint,
+			String paperTag,
+			ExamPaper examPaper);
 
 	public List<ExamPaper> getExamPaperListByPaperType(String paperType,
 			Page<ExamPaper> page);
