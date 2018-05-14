@@ -163,10 +163,11 @@ public class MobileController {
 			examHistory.setExamPaperId(examPaperId);
 			examHistory.setUserId(userInfo.getUserid());
 			examHistory.setDuration(examPaper.getDuration());
+			examHistory.setCreateTime(new Date());
 			examService.addUserExamHistory(examHistory);
-			examHistory = examService
-					.getUserExamHistoryByUserIdAndExamPaperId(userInfo.getUserid(),
-							examPaperId);
+//			examHistory = examService
+//					.getUserExamHistoryByUserIdAndExamPaperId(userInfo.getUserid(),
+//							examPaperId);
 			
 		}
 		

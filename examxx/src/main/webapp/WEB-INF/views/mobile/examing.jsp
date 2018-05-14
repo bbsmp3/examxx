@@ -32,7 +32,7 @@ String basePath = request.getScheme() + "://"
 
 		<div data-role="header" data-position="fixed">
 			<a href="#" class="ui-btn ui-btn-left ui-icon-user ui-btn-icon-left">${truename}</a> 
-			<a href="j_spring_security_logout" class="ui-btn ui-btn-right ui-icon-action ui-btn-icon-right">退出</a> 
+			<!--  a href="#" class="ui-btn ui-btn-right ui-icon-action ui-btn-icon-right"></a--> 
 			<h1>分行考试系统</h1>
 			<div data-role="navbar">
 					<ul>
